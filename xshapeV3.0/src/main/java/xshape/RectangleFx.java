@@ -26,4 +26,12 @@ public class RectangleFx extends Rectangle {
 		_adapted.setHeight(size.getY());
 		_adapted.setFill(Color.BLUE);
 	}
+	@Override
+	public double rotation(){
+		return _adapted.getRotate();
+	}
+	@Override
+	public void rotation(double angle){
+		_adapted.setRotate(angle);
+	}
 }

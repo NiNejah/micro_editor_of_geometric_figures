@@ -9,4 +9,7 @@ public interface Shape{
 	Point2D position();
 	Shape position(Point2D position);
 	Shape translate(Point2D vec);
+	double rotation();
+	void rotation(double angle);
+
 }

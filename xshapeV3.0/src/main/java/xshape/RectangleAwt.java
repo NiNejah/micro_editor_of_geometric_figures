@@ -23,5 +23,8 @@ public class RectangleAwt extends Rectangle {
         (int)(size.getY()));
         g.setColor(c);
 	}
-
+	@Override
+	public double rotation(){return 0.;};
+	@Override
+	public void rotation(double angle){};
 }
