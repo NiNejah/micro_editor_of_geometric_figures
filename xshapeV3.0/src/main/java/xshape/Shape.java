@@ -11,5 +11,6 @@ public interface Shape{
 	Shape translate(Point2D vec);
 	double rotation();
 	void rotation(double angle);
-
+	Point2D rotationCenter();
+	void rotationCenter(Point2D centerOfRotation);
 }

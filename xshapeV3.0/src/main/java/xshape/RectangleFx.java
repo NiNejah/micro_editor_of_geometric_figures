@@ -34,4 +34,11 @@ public class RectangleFx extends Rectangle {
 	public void rotation(double angle){
 		_adapted.setRotate(angle);
 	}
+	public Point2D rotationCenter(){
+		// TODO
+		return null;
+	}
+	public void rotationCenter(Point2D centerOfRotation){
+		// TODO
+	};
 }
