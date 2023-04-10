@@ -11,5 +11,11 @@ public class ElementFactoryFx implements ElementFactory {
     public Rectangle createRectangle(double posX, double posY, 
     double height, double width) {
         return new RectangleFx(posX, posY, height, width, grp);
-    } 
+    }
+
+    @Override
+    public Element createButton(double posX, double posY, double height, double width, String label) {
+        return new ButtonFx(posX,posY,height,width,label,grp);
+    }
+
 }

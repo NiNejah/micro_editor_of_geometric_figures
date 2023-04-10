@@ -15,7 +15,9 @@ public abstract class XShape {
         Shape shape = _factory.createRectangle(100, 100, 50, 50);
         Shape shape2 = _factory.createRectangle(250, 250, 75, 20);
         shape.translate(new Point2D.Double(100, 50));
-        Shape[] tmp = { shape, shape2 };
+        Element saveBtn =  _factory.createButton(20,20,20,80,"Save");
+        Element doBtn =  _factory.createButton(120,20,20,80,"do");
+        Element[] tmp = { shape, shape2 ,saveBtn,doBtn};
         _element = tmp;
     }
 
