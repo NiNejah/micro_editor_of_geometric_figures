@@ -36,8 +36,8 @@ public class AwtApp extends XShape {
     }
     
     @Override
-    protected ShapeFactory createFactory() {
-        return new ShapeFactoryAwt();
+    protected ElementFactory createFactory() {
+        return new ElementFactoryAwt();
     }
 
     @Override

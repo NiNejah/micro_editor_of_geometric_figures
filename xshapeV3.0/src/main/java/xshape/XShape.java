@@ -3,11 +3,11 @@ package xshape;
 import java.awt.geom.Point2D;
 
 public abstract class XShape {
-    private ShapeFactory _factory = null;
+    private ElementFactory _factory = null;
     Shape[] _shapes = null;
 
     //method factory to delegate instanciation of Shapefactory to subclass
-    protected abstract ShapeFactory createFactory();
+    protected abstract ElementFactory createFactory();
     //Handler to start the GUI
     abstract void run();
 

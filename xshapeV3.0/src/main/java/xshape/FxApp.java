@@ -3,8 +3,8 @@ package xshape;
 public class FxApp extends XShape {
 
     @Override
-    protected ShapeFactory createFactory() {
-        return new ShapeFactoryFx(FxApplication._root);
+    protected ElementFactory createFactory() {
+        return new ElementFactoryFx(FxApplication._root);
     }
     @Override
     void run() {

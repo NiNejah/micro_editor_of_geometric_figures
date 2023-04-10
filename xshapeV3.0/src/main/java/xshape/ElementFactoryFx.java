@@ -2,9 +2,9 @@ package xshape;
 
 import javafx.scene.Group;
 
-public class ShapeFactoryFx implements ShapeFactory {
+public class ElementFactoryFx implements ElementFactory {
     Group grp;
-    public ShapeFactoryFx(Group root) {
+    public ElementFactoryFx(Group root) {
         grp = root;
     }
     @Override

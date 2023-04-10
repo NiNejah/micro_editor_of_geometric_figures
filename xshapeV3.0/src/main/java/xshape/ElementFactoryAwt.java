@@ -1,7 +1,7 @@
 package xshape;
 
-public class ShapeFactoryAwt implements ShapeFactory {
-    public ShapeFactoryAwt() {
+public class ElementFactoryAwt implements ElementFactory {
+    public ElementFactoryAwt() {
     }
     @Override
     public Rectangle createRectangle(double posX, double posY, 
