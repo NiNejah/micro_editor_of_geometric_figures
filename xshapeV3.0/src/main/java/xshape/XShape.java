@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 
 public abstract class XShape {
     private ElementFactory _factory = null;
-    Shape[] _shapes = null;
+    Element[] _element = null;
 
     //method factory to delegate instanciation of Shapefactory to subclass
     protected abstract ElementFactory createFactory();
@@ -16,16 +16,16 @@ public abstract class XShape {
         Shape shape2 = _factory.createRectangle(250, 250, 75, 20);
         shape.translate(new Point2D.Double(100, 50));
         Shape[] tmp = { shape, shape2 };
-        _shapes = tmp;
+        _element = tmp;
     }
 
     public void draw() {
-        if (_shapes == null) {
+        if (_element == null) {
             _factory = createFactory();
             createScene();
         }
 
-        for (Shape s : _shapes)
+        for (Element s : _element)
             s.draw();
     }
 
