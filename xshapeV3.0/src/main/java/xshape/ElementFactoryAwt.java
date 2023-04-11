@@ -10,7 +10,7 @@ public class ElementFactoryAwt implements ElementFactory {
     }
 
     @Override
-    public Element createButton(double posX, double posY, double height, double width, String label) {
-        return new ButtonAwt(posX,posY,height,width,label);
+    public Element createButton(double posX, double posY, double height, double width, String label,String icon ) {
+        return new ButtonAwt(posX,posY,height,width,label,icon);
     }
 }

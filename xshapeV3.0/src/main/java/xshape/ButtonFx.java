@@ -13,7 +13,7 @@ public class ButtonFx extends ElementAbstract implements xshape.Button {
     private javafx.scene.control.Button _adapted = new javafx.scene.control.Button() ;
     private String _label  ;
     Group _grp = null;
-    public ButtonFx (double posX, double posY, double height, double width, String label ,Group grp){
+    public ButtonFx (double posX, double posY, double height, double width, String label , String icon ,Group grp){
         position(new Point2D.Double(posX, posY));
         size(new Point2D.Double(width, height));
         label(label);

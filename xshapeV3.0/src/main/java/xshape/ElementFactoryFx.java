@@ -14,8 +14,8 @@ public class ElementFactoryFx implements ElementFactory {
     }
 
     @Override
-    public Element createButton(double posX, double posY, double height, double width, String label) {
-        return new ButtonFx(posX,posY,height,width,label,grp);
+    public Element createButton(double posX, double posY, double height, double width, String label , String icon) {
+        return new ButtonFx(posX,posY,height,width,label,icon,grp);
     }
 
 }
