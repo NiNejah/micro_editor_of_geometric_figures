@@ -18,4 +18,9 @@ public class ElementFactoryFx implements ElementFactory {
         return new ButtonFx(posX,posY,height,width,label,icon,grp);
     }
 
+    @Override
+    public Toolbar createToolbar(double posX, double posY, double height, double width) {
+        return new ToolbarFx();
+    }
+
 }
