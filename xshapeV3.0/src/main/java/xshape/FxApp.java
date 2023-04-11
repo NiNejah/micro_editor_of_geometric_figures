@@ -1,14 +1,22 @@
 package xshape;
 
+import javafx.stage.Stage;
+
 public class FxApp extends XShape {
 
+    private Stage stage;
+
+    public FxApp(Stage stage){
+        this.stage = stage;
+    }
     @Override
     protected ElementFactory createFactory() {
         return new ElementFactoryFx(FxApplication._root);
     }
     @Override
-    void run() {
+    void run(){
+        //FxApplication.launch(FxApplication.class);
         draw();
-        FxApplication.launch(FxApplication.class);
+        System.out.println("test");
     }
 }

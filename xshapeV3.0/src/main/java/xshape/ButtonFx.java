@@ -39,8 +39,9 @@ public class ButtonFx extends ElementAbstract implements xshape.Button {
         Point2D size = size();
         _adapted.setLayoutX(pos.getX());
         _adapted.setLayoutY(pos.getY());
+        _adapted.setText(label());
         _adapted.setPrefSize(size.getX(),size.getY());
-        _adapted.setStyle("-fx-background-color: white;");
+        //_adapted.setStyle("-fx-background-color: black;");
     }
 
 }

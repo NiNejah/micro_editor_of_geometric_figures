@@ -1,5 +1,7 @@
 package xshape;
 
+import javafx.scene.Scene;
+
 import java.awt.geom.Point2D;
 
 public abstract class XShape {
