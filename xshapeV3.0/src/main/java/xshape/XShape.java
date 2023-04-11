@@ -10,7 +10,7 @@ public abstract class XShape {
 
     // TODO : remove all of that to a Builder :
     private int BTN_SIZE = 40 ;
-    private int BTN_MARGE = 10 ;
+    private int BTN_MARGE = 25 ;
 
     //method factory to delegate instanciation of Shapefactory to subclass
     protected abstract ElementFactory createFactory();
