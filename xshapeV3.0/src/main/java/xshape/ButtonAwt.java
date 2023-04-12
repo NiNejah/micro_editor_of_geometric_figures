@@ -50,7 +50,7 @@ public class ButtonAwt extends ElementAbstract implements xshape.Button {
 
 
     @Override
-    public void draw() {
+    public Object draw() {
         Graphics g = AwtContext.instance().graphics();
 //        Color c = g.getColor();
         Point2D pos = position();
@@ -64,5 +64,6 @@ public class ButtonAwt extends ElementAbstract implements xshape.Button {
 //        _adapted.paint(g); // Draw the JButton on the Graphics object
         _adapted.paint(g.create((int) pos.getX(), (int) pos.getY(), (int) size.getX(), (int) size.getY()));
 //        g.setColor(c);
+        return _adapted;
     }
 }

@@ -57,7 +57,7 @@ public class ButtonFx extends ElementAbstract implements xshape.Button {
 
     // FIXME
     @Override
-    public void draw() {
+    public Object draw() {
         Point2D pos = position();
         Point2D size = size();
         _adapted.setLayoutX(pos.getX());
@@ -65,6 +65,7 @@ public class ButtonFx extends ElementAbstract implements xshape.Button {
 //        _adapted.setText(label());
         _adapted.setPrefSize(size.getX(),size.getY());
         //_adapted.setStyle("-fx-background-color: black;");
+        return _adapted;
     }
 
 }

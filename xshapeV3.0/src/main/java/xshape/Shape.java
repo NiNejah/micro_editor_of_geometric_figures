@@ -7,5 +7,7 @@ public interface Shape extends Element {
 	double rotation();
 	void rotation(double angle);
 	Point2D rotationCenter();
-	void rotationCenter(Point2D centerOfRotation);
+	void rotationCenter(Point2D.Double centerOfRotation);
+
+	public Shape clone();
 }

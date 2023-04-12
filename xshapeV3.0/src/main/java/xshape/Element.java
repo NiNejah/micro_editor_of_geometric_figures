@@ -3,7 +3,7 @@ package xshape;
 import java.awt.geom.Point2D;
 
 public interface Element {
-    void draw();
+    Object draw();
     Point2D size();
     Element size(Point2D vec);
     Point2D position();
