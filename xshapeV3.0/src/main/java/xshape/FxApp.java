@@ -4,8 +4,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
 import javafx.stage.Stage;
-import xshape.model.Canvas;
 import xshape.model.Shape;
 import xshape.model.ShapeFactoryFx;
 
@@ -37,15 +40,24 @@ public class FxApp extends XShape {
     }
 
     void createUI(){
-        ToolbarFx toolbar = new ToolbarFx(_shapefactory);
+        //toolbar horizontale
+        ToolbarFx toolbar2 = new ToolbarFx(_shapefactory, ToolbarStyle.HORIZONTAL);
+        ToolBar tbFX2 = (ToolBar) toolbar2.draw();
+        this.toolbarH = tbFX2;
+        FxApplication.pane.setTop(tbFX2);
+        //binEvents((ImageView) this.toolbarH.getItems().get(0));
+
+        //toolbar verticale
+        ToolbarFx toolbar = new ToolbarFx(_shapefactory, ToolbarStyle.VERTICAL);
         ToolBar tbFX = (ToolBar) toolbar.draw();
-        this.toolbar = tbFX;
+        this.toolbarV = tbFX;
         ObservableList<Node> nodes = tbFX.getItems();
         graphToModel.put(nodes.get(0), toolbar.rectangle);
         for(Node n: nodes){
             toolbarShapeEvents(n);
         }
         FxApplication.pane.setLeft(tbFX);
+
         FxApplication.pane.setCenter(FxApplication._root);
     }
     public void draw(){
@@ -56,18 +68,34 @@ public class FxApp extends XShape {
     }
 
     public void toolbarShapeEvents(Node n){
+        /*n.setOnDragDetected(event -> {
+            Dragboard db = n.startDragAndDrop();
+            ClipboardContent cc = new ClipboardContent();
+            cc.put(DataFormat.IMAGE, graphToModel.get(n));
+            db.setContent(cc);
+            event.consume();
+        });
+        n.setOnDragDone(event -> {
+            event.consume();
+        });*/
         n.setOnMousePressed(e -> {
             System.out.println("drag start");
         });
         n.setOnMouseReleased(e -> {
             Shape shape = graphToModel.get(n);
-            Shape newShape = shape.clone();
-            newShape.setPosition(new Point2D.Double(e.getSceneX(), e.getSceneY()));
-            System.out.println(e.getSceneX() + " " + e.getSceneY());
-            if(e.getSceneX() > this.toolbar.getWidth())
-                addShapeToCanvas(newShape);
+            if(e.getSceneX() > 0 && e.getSceneY() > 0 && e.getSceneX() <= 40 && e.getSceneY() <= 40){
+                removeShapeFromToolbar(n);
+            } else {
+                Shape newShape = shape.clone();
+                newShape.setPosition(new Point2D.Double(e.getSceneX(), e.getSceneY()));
+                System.out.println(e.getSceneX() + " " + e.getSceneY());
+                if(e.getSceneX() > this.toolbarV.getWidth())
+                    addShapeToCanvas(newShape);
+            }
+
             System.out.println("drop");
         });
+
     }
 
     public void canvasShapeEvents(Node n){
@@ -76,11 +104,15 @@ public class FxApp extends XShape {
         });
         n.setOnMouseReleased(e -> {
             Shape shape = graphToModel.get(n);
-            Shape newShape = shape.clone();
-            newShape.setPosition(new Point2D.Double(e.getSceneX(), e.getSceneY()));
-            System.out.println(e.getSceneX() + " " + e.getSceneY());
-            if(e.getSceneX() < this.toolbar.getWidth())
-                addShapeToToolbar(newShape);
+            if(e.getSceneX() > 0 && e.getSceneY() > 0 && e.getSceneX() <= 40 && e.getSceneY() <= 40){
+                removeShapeFromCanvas(n);
+            } else {
+                Shape newShape = shape.clone();
+                newShape.setPosition(new Point2D.Double(e.getSceneX(), e.getSceneY()));
+                System.out.println(e.getSceneX() + " " + e.getSceneY());
+                if(e.getSceneX() < this.toolbarV.getWidth())
+                    addShapeToToolbar(newShape);
+            }
             System.out.println("drop");
         });
     }
@@ -104,10 +136,39 @@ public class FxApp extends XShape {
         graphToModel.put(newNode, s);
     }
 
+    public void removeShapeFromToolbar(Node n){
+        graphToModel.remove(n);
+        toolbarV.getItems().remove(n);
+    }
+
+    public void removeShapeFromCanvas(Node n){
+        Shape s = graphToModel.get(n);
+        canvas.removeShape(s);
+        graphToModel.remove(n);
+        FxApplication._root.getChildren().remove(n);
+    }
+
     public void addShapeToToolbar(Shape s){
         Node newNode = (Node) s.draw();
         graphToModel.put(newNode, s);
-        toolbar.getItems().add(newNode);
+        toolbarV.getItems().add(newNode);
         toolbarShapeEvents(newNode);
+    }
+
+    private void binEvents(ImageView iv){
+        iv.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if(db.hasContent(DataFormat.IMAGE)){
+                success = true;
+                Shape s = (Shape) db.getContent(DataFormat.IMAGE);
+                Node n = (Node) s.draw();
+                graphToModel.remove(n);
+                toolbarV.getItems().remove(n);
+                FxApplication._root.getChildren().remove(n);
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
     }
 }

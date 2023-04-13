@@ -14,7 +14,9 @@ public abstract class XShape {
 
     protected Canvas canvas;
 
-    protected ToolBar toolbar;
+    protected ToolBar toolbarV;
+
+    protected ToolBar toolbarH;
 
     // TODO : remove all of that to a Builder :
     private int BTN_SIZE = 40 ;

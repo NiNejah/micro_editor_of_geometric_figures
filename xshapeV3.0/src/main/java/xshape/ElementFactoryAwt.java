@@ -19,7 +19,7 @@ public class ElementFactoryAwt implements ElementFactory {
         return new ButtonAwt(posX,posY,height,width,label,icon);
     }
     @Override
-    public Toolbar createToolbar(double posX, double posY, double height, double width) {
+    public Toolbar createToolbar(double posX, double posY, double height, double width, ToolbarStyle style) {
         return new ToolbarAwt();
     }
 }
