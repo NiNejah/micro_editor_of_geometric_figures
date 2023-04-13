@@ -1,6 +1,7 @@
-package xshape;
+package xshape.model;
 
-import javafx.scene.Group;
+import xshape.AwtContext;
+import xshape.model.Rectangle;
 
 import java.awt.geom.Point2D;
 import java.awt.*;

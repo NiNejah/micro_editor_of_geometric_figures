@@ -2,25 +2,27 @@ package xshape;
 
 import javafx.geometry.Orientation;
 import javafx.scene.control.ToolBar;
-import javafx.scene.layout.BorderPane;
+import xshape.model.Rectangle;
+import xshape.model.ShapeFactory;
 
 public class ToolbarFx extends ElementAbstract implements xshape.Toolbar{
 
-    private ElementFactory factory;
+    public Rectangle rectangle;
 
-    public ToolbarFx(ElementFactory fx){
+    private ShapeFactory factory;
+
+    public ToolbarFx(ShapeFactory fx){
         this.factory = fx;
     }
     @Override
     public Object draw() {
         ToolBar toolbar = new ToolBar();
         toolbar.setOrientation(Orientation.VERTICAL);
-        Rectangle rectangleFx = factory.createRectangle(0, 0, 50, 50);
-        javafx.scene.shape.Rectangle node = (javafx.scene.shape.Rectangle) rectangleFx.draw();
-        node.getOnDragEntered()
+        rectangle = factory.createRectangle(0, 0, 50, 50);
+        rectangle.setColor(0, 0, 255);
+        javafx.scene.shape.Rectangle node = (javafx.scene.shape.Rectangle) rectangle.draw();
         toolbar.getItems().add(node);
         return toolbar;
     }
-
 
 }

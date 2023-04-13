@@ -1,8 +1,10 @@
-package xshape;
+package xshape.model;
+
+import xshape.Element;
 
 import java.awt.geom.Point2D;
 
-public abstract class AShape implements Shape{
+public abstract class AShape implements Shape {
     private Point2D.Double position;
     private double rotation;
     protected int colorR, colorB, colorG;
@@ -49,6 +51,11 @@ public abstract class AShape implements Shape{
     @Override
     public Element position(Point2D position) {
         return null;
+    }
+
+    @Override
+    public void setPosition(Point2D.Double position) {
+        this.position = position;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package xshape;
 
+import xshape.model.ShapeFactoryAwt;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -36,8 +38,9 @@ public class AwtApp extends XShape {
     }
     
     @Override
-    protected ElementFactory createFactory() {
-        return new ElementFactoryAwt();
+    protected void createFactories() {
+        this._factory = new ElementFactoryAwt();
+        this._shapefactory = new ShapeFactoryAwt();
     }
 
     @Override

@@ -1,5 +1,8 @@
 package xshape;
 
+import xshape.model.Rectangle;
+import xshape.model.RectangleAwt;
+
 import java.awt.geom.Point2D;
 
 public class ElementFactoryAwt implements ElementFactory {

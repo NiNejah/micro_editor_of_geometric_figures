@@ -1,39 +1,51 @@
 package xshape;
 
-import javafx.scene.Scene;
+import javafx.scene.control.ToolBar;
+import xshape.model.Canvas;
+import xshape.model.Shape;
+import xshape.model.ShapeFactory;
 
 import java.awt.geom.Point2D;
 
 public abstract class XShape {
     protected ElementFactory _factory = null;
-    Element[] _element = null;
+
+    protected ShapeFactory _shapefactory = null;
+
+    protected Canvas canvas;
+
+    protected ToolBar toolbar;
 
     // TODO : remove all of that to a Builder :
     private int BTN_SIZE = 40 ;
     private int BTN_MARGE = 25 ;
 
+    public XShape(){
+        this.canvas = new Canvas();
+    }
+
     //method factory to delegate instanciation of Shapefactory to subclass
-    protected abstract ElementFactory createFactory();
+    protected abstract void createFactories();
     //Handler to start the GUI
     abstract void run();
 
     protected void createScene() {
-        Shape shape = _factory.createRectangle(100, 100, 50, 50);
-        Shape shape2 = _factory.createRectangle(250, 250, 75, 20);
+        Shape shape = _shapefactory.createRectangle(100, 100, 50, 50);
+        this.canvas.addShape(shape);
+        Shape shape2 = _shapefactory.createRectangle(250, 250, 75, 20);
+        this.canvas.addShape(shape2);
         shape.translate(new Point2D.Double(100, 50));
         //Element saveBtn =  _factory.createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
         //Element doBtn =  _factory.createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do","redo.png");
-        Element[] tmp = { shape, shape2};
-        _element = tmp;
     }
 
     public void draw() {
-        if (_element == null) {
-            _factory = createFactory();
+        if (canvas.isEmpty()) {
+            createFactories();
             createScene();
         }
 
-        for (Element s : _element)
+        for (Shape s: canvas.getShapes())
             s.draw();
     }
 

@@ -1,8 +1,7 @@
-package xshape;
+package xshape.model;
 
 import java.awt.geom.Point2D;
-import javafx.scene.Group;
-import javafx.scene.Node;
+
 import javafx.scene.paint.Color;
 
 public class RectangleFx extends Rectangle {
@@ -12,8 +11,10 @@ public class RectangleFx extends Rectangle {
 	public RectangleFx(double width, double height, double arcWidth, double arcHeight,
 					   Point2D.Double pos, double rot, int red, int green, int blue) {
 		super(width, height, arcWidth, arcHeight, pos, rot, red, green, blue);
-		/*_grp = grp;
-		_grp.getChildren().add(_adapted);*/
+	}
+
+	public RectangleFx(RectangleFx r){
+		super(r);
 	}
 
 	@Override
@@ -41,4 +42,11 @@ public class RectangleFx extends Rectangle {
 	public void rotationCenter(Point2D centerOfRotation){
 		// TODO
 	};
+
+	@Override
+	public Shape clone() {
+		return new RectangleFx(this);
+	}
+
+
 }

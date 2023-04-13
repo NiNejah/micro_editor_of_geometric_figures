@@ -1,4 +1,4 @@
-package xshape;
+package xshape.model;
 
 import java.awt.geom.Point2D;
 
@@ -23,5 +23,15 @@ public abstract class Rectangle extends AShape {
         position().setLocation(position().getX() + vec.getX(),
                 position().getY() + vec.getY());
         return this;
+    }
+
+    public void setColor(int r, int g, int b){
+        if(r >= 0 && r <= 256) this.colorR = r;
+        if(g >= 0 && g <= 256) this.colorG = g;
+        if(b >= 0 && b <= 256) this.colorB = b;
+    }
+
+    public Shape clone(){
+        return null;
     }
 }
