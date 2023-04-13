@@ -18,7 +18,8 @@ public class FxApp extends XShape {
     private HashMap<Node, Shape> graphToModel = new HashMap<>();
 
     private Stage stage;
-
+    private int BTN_MARGE = 20 ;
+    private int BTN_SIZE = 40 ;
 
     public FxApp(Stage stage){
         super();
@@ -92,7 +93,7 @@ public class FxApp extends XShape {
         addShapeToCanvas(shape);
         Shape shape2 = _shapefactory.createRectangle(250, 250, 75, 20);
         addShapeToCanvas(shape2);
-        //Element saveBtn =  _factory.createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
+        Element saveBtn =  _factory.createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
         //Element doBtn =  _factory.createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do","redo.png");
     }
 
@@ -109,5 +110,8 @@ public class FxApp extends XShape {
         graphToModel.put(newNode, s);
         toolbar.getItems().add(newNode);
         toolbarShapeEvents(newNode);
+    }
+    public void  update(Shape s ){
+         s.draw();
     }
 }

@@ -20,6 +20,6 @@ public class ElementFactoryAwt implements ElementFactory {
     }
     @Override
     public Toolbar createToolbar(double posX, double posY, double height, double width) {
-        return new ToolbarAwt();
+        return new ToolbarAwt(posX, posY, height, width);
     }
 }

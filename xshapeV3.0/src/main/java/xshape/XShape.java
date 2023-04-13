@@ -1,6 +1,5 @@
 package xshape;
 
-import javafx.scene.control.ToolBar;
 import xshape.model.Canvas;
 import xshape.model.Shape;
 import xshape.model.ShapeFactory;
@@ -14,14 +13,16 @@ public abstract class XShape {
 
     protected Canvas canvas;
 
-    protected ToolBar toolbar;
+    protected Toolbar toolbar;
 
     // TODO : remove all of that to a Builder :
     private int BTN_SIZE = 40 ;
     private int BTN_MARGE = 25 ;
+    private Element[] _element =null;
 
     public XShape(){
         this.canvas = new Canvas();
+        toolbar = _factory.createToolbar(BTN_MARGE,BTN_MARGE+BTN_SIZE,400,100);
     }
 
     //method factory to delegate instanciation of Shapefactory to subclass
@@ -35,8 +36,8 @@ public abstract class XShape {
         Shape shape2 = _shapefactory.createRectangle(250, 250, 75, 20);
         this.canvas.addShape(shape2);
         shape.translate(new Point2D.Double(100, 50));
-        //Element saveBtn =  _factory.createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
-        //Element doBtn =  _factory.createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do","redo.png");
+        Element saveBtn =  _factory.createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
+        Element doBtn =  _factory.createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do","redo.png");
     }
 
     public void draw() {
