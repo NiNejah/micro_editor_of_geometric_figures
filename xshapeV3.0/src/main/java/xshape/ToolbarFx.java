@@ -1,6 +1,7 @@
 package xshape;
 
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,8 +12,6 @@ import java.io.File;
 import java.io.InputStream;
 
 public class ToolbarFx extends ElementAbstract implements xshape.Toolbar{
-
-    public static enum Style {HORIZONTAL, VERTICAL};
 
     public Rectangle rectangle;
 
@@ -29,10 +28,7 @@ public class ToolbarFx extends ElementAbstract implements xshape.Toolbar{
         if(style == ToolbarStyle.VERTICAL){
             ToolBar toolbar = new ToolBar();
             toolbar.setOrientation(Orientation.VERTICAL);
-            rectangle = factory.createRectangle(0, 0, 50, 50);
-            rectangle.setColor(0, 0, 255);
-            javafx.scene.shape.Rectangle node = (javafx.scene.shape.Rectangle) rectangle.draw();
-            toolbar.getItems().add(node);
+
             return toolbar;
         } else {
             ToolBar toolbar = new ToolBar();

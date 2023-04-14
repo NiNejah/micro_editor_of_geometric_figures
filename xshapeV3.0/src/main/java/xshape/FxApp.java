@@ -8,7 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import xshape.model.Rectangle;
 import xshape.model.Shape;
 import xshape.model.ShapeFactoryFx;
 
@@ -32,59 +34,34 @@ public class FxApp extends XShape {
         this._shapefactory = new ShapeFactoryFx();
         this._factory = new ElementFactoryFx();
     }
-    @Override
-    void run(){
-        createFactories();
-        createUI();
-        draw();
-    }
 
-    void createUI(){
-        //toolbar horizontale
-        ToolbarFx toolbar2 = new ToolbarFx(_shapefactory, ToolbarStyle.HORIZONTAL);
-        ToolBar tbFX2 = (ToolBar) toolbar2.draw();
-        this.toolbarH = tbFX2;
-        FxApplication.pane.setTop(tbFX2);
-        //binEvents((ImageView) this.toolbarH.getItems().get(0));
-
-        //toolbar verticale
-        ToolbarFx toolbar = new ToolbarFx(_shapefactory, ToolbarStyle.VERTICAL);
-        ToolBar tbFX = (ToolBar) toolbar.draw();
-        this.toolbarV = tbFX;
-        ObservableList<Node> nodes = tbFX.getItems();
-        graphToModel.put(nodes.get(0), toolbar.rectangle);
+    protected void createUI(){
+        UIBuilder builder = new UIBuilder(this._factory);
+        BorderPane pane = (BorderPane) builder.build();
+        this.toolbarH = (ToolBar) pane.getTop();
+        this.toolbarV = (ToolBar) pane.getLeft();
+        Rectangle rectangle = this._shapefactory.createRectangle(0, 0, 50, 50);
+        rectangle.setColor(0, 0, 255);
+        Node rectNode = (javafx.scene.shape.Rectangle) rectangle.draw();
+        toolbarV.getItems().add(rectNode);
+        ObservableList<Node> nodes = toolbarV.getItems();
+        graphToModel.put(rectNode, rectangle);
         for(Node n: nodes){
             toolbarShapeEvents(n);
         }
-        FxApplication.pane.setLeft(tbFX);
 
-        FxApplication.pane.setCenter(FxApplication._root);
-    }
-    public void draw(){
-        if (this.canvas.isEmpty()) {
-            createFactories();
-            createScene();
-        }
+        this.stage.getScene().setRoot(pane);
+        FxApplication.pane = pane;
     }
 
     public void toolbarShapeEvents(Node n){
-        /*n.setOnDragDetected(event -> {
-            Dragboard db = n.startDragAndDrop();
-            ClipboardContent cc = new ClipboardContent();
-            cc.put(DataFormat.IMAGE, graphToModel.get(n));
-            db.setContent(cc);
-            event.consume();
-        });
-        n.setOnDragDone(event -> {
-            event.consume();
-        });*/
         n.setOnMousePressed(e -> {
             System.out.println("drag start");
         });
         n.setOnMouseReleased(e -> {
             Shape shape = graphToModel.get(n);
             if(e.getSceneX() > 0 && e.getSceneY() > 0 && e.getSceneX() <= 40 && e.getSceneY() <= 40){
-                removeShapeFromToolbar(n);
+                removeShapeFromToolbar(shape);
             } else {
                 Shape newShape = shape.clone();
                 newShape.setPosition(new Point2D.Double(e.getSceneX(), e.getSceneY()));
@@ -105,7 +82,7 @@ public class FxApp extends XShape {
         n.setOnMouseReleased(e -> {
             Shape shape = graphToModel.get(n);
             if(e.getSceneX() > 0 && e.getSceneY() > 0 && e.getSceneX() <= 40 && e.getSceneY() <= 40){
-                removeShapeFromCanvas(n);
+                removeShapeFromCanvas(shape);
             } else {
                 Shape newShape = shape.clone();
                 newShape.setPosition(new Point2D.Double(e.getSceneX(), e.getSceneY()));
@@ -117,17 +94,6 @@ public class FxApp extends XShape {
         });
     }
 
-    @Override
-    protected void createScene() {
-        Shape shape = _shapefactory.createRectangle(100, 100, 50, 50);
-        shape.translate(new Point2D.Double(100, 50));
-        addShapeToCanvas(shape);
-        Shape shape2 = _shapefactory.createRectangle(250, 250, 75, 20);
-        addShapeToCanvas(shape2);
-        //Element saveBtn =  _factory.createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
-        //Element doBtn =  _factory.createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do","redo.png");
-    }
-
     public void addShapeToCanvas(Shape s){
         canvas.addShape(s);
         Node newNode = (Node) s.draw();
@@ -136,14 +102,15 @@ public class FxApp extends XShape {
         graphToModel.put(newNode, s);
     }
 
-    public void removeShapeFromToolbar(Node n){
+    public void removeShapeFromToolbar(Shape s){
+        Node n = (Node) s.draw();
         graphToModel.remove(n);
         toolbarV.getItems().remove(n);
     }
 
-    public void removeShapeFromCanvas(Node n){
-        Shape s = graphToModel.get(n);
+    public void removeShapeFromCanvas(Shape s){
         canvas.removeShape(s);
+        Node n = (Node) s.draw();
         graphToModel.remove(n);
         FxApplication._root.getChildren().remove(n);
     }
@@ -153,22 +120,5 @@ public class FxApp extends XShape {
         graphToModel.put(newNode, s);
         toolbarV.getItems().add(newNode);
         toolbarShapeEvents(newNode);
-    }
-
-    private void binEvents(ImageView iv){
-        iv.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if(db.hasContent(DataFormat.IMAGE)){
-                success = true;
-                Shape s = (Shape) db.getContent(DataFormat.IMAGE);
-                Node n = (Node) s.draw();
-                graphToModel.remove(n);
-                toolbarV.getItems().remove(n);
-                FxApplication._root.getChildren().remove(n);
-            }
-            event.setDropCompleted(success);
-            event.consume();
-        });
     }
 }

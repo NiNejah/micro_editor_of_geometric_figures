@@ -1,5 +1,6 @@
 package xshape;
 
+import xshape.model.Shape;
 import xshape.model.ShapeFactoryAwt;
 
 import java.awt.*;
@@ -49,6 +50,31 @@ public class AwtApp extends XShape {
         jc.setBackground(Color.WHITE);
         jc.setPreferredSize(new Dimension(500, 500));
         GUIHelper.showOnFrame(jc, "XShape Swing/AWT Rendering");        
+    }
+
+    @Override
+    protected void addShapeToCanvas(Shape shape) {
+
+    }
+
+    @Override
+    protected void addShapeToToolbar(Shape shape) {
+
+    }
+
+    @Override
+    protected void removeShapeFromCanvas(Shape shape) {
+
+    }
+
+    @Override
+    protected void removeShapeFromToolbar(Shape shape) {
+
+    }
+
+    @Override
+    protected void createUI() {
+
     }
 }
 

@@ -2,6 +2,7 @@ package xshape;
 
 import xshape.model.Rectangle;
 import xshape.model.RectangleAwt;
+import xshape.model.ShapeFactoryAwt;
 
 import java.awt.geom.Point2D;
 
@@ -20,6 +21,12 @@ public class ElementFactoryAwt implements ElementFactory {
     }
     @Override
     public Toolbar createToolbar(double posX, double posY, double height, double width, ToolbarStyle style) {
-        return new ToolbarAwt();
+        return new ToolbarAwt(new ShapeFactoryAwt(), style);
+    }
+
+    @Override
+    public Object createUI(Toolbar toolbarH, Toolbar toolbarV) {
+        // TODO
+        return null;
     }
 }

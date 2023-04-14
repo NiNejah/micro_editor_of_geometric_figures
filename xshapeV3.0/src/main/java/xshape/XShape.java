@@ -29,26 +29,36 @@ public abstract class XShape {
     //method factory to delegate instanciation of Shapefactory to subclass
     protected abstract void createFactories();
     //Handler to start the GUI
-    abstract void run();
+    void run(){
+        createFactories();
+        createUI();
+        draw();
+    }
 
     protected void createScene() {
         Shape shape = _shapefactory.createRectangle(100, 100, 50, 50);
-        this.canvas.addShape(shape);
-        Shape shape2 = _shapefactory.createRectangle(250, 250, 75, 20);
-        this.canvas.addShape(shape2);
         shape.translate(new Point2D.Double(100, 50));
+        addShapeToCanvas(shape);
+        Shape shape2 = _shapefactory.createRectangle(250, 250, 75, 20);
+        addShapeToCanvas(shape2);
         //Element saveBtn =  _factory.createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
         //Element doBtn =  _factory.createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do","redo.png");
     }
 
+    protected abstract void addShapeToCanvas(Shape shape);
+
+    protected abstract void addShapeToToolbar(Shape shape);
+
+    protected abstract void removeShapeFromCanvas(Shape shape);
+
+    protected abstract void removeShapeFromToolbar(Shape shape);
+
+    protected abstract void createUI();
+
     public void draw() {
-        if (canvas.isEmpty()) {
-            createFactories();
+        if (this.canvas.isEmpty()) {
             createScene();
         }
-
-        for (Shape s: canvas.getShapes())
-            s.draw();
     }
 
 }
