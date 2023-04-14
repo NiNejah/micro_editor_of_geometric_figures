@@ -1,26 +1,34 @@
 package xshape;
 
 import javafx.collections.ObservableList;
+import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import xshape.model.Rectangle;
 import xshape.model.Shape;
 import xshape.model.ShapeFactoryFx;
+import xshape.model.ShapeGroup;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FxApp extends XShape {
 
     // TODO ajouter observateur dans cette classe (controller)
     private HashMap<Node, Shape> graphToModel = new HashMap<>();
+
+    private ShapeGroup currentSelection = new ShapeGroup(new ArrayList<>());
 
     private Stage stage;
 
@@ -77,7 +85,12 @@ public class FxApp extends XShape {
 
     public void canvasShapeEvents(Node n){
         n.setOnMousePressed(e -> {
-            System.out.println("drag start");
+            if(e.getButton() == MouseButton.PRIMARY && e.isControlDown()){
+                this.currentSelection.add(graphToModel.get(n));
+            }
+            if(e.getButton() == MouseButton.SECONDARY)
+                contextMenu(n);
+            System.out.println(n.getLayoutX() + "" + n.getLayoutY());
         });
         n.setOnMouseReleased(e -> {
             Shape shape = graphToModel.get(n);
@@ -86,7 +99,6 @@ public class FxApp extends XShape {
             } else {
                 Shape newShape = shape.clone();
                 newShape.setPosition(new Point2D.Double(e.getSceneX(), e.getSceneY()));
-                System.out.println(e.getSceneX() + " " + e.getSceneY());
                 if(e.getSceneX() < this.toolbarV.getWidth())
                     addShapeToToolbar(newShape);
             }
@@ -120,5 +132,14 @@ public class FxApp extends XShape {
         graphToModel.put(newNode, s);
         toolbarV.getItems().add(newNode);
         toolbarShapeEvents(newNode);
+    }
+
+    public void contextMenu(Node n){
+        // TODO actions pour chaque option
+        ContextMenu menu = new ContextMenu();
+        MenuItem item1 = new MenuItem("Group");
+        MenuItem item2 = new MenuItem("Edit");
+        menu.getItems().addAll(item1, item2);
+        menu.show(n, Side.BOTTOM, 0, 0);
     }
 }
