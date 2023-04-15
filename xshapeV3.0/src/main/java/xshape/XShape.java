@@ -6,6 +6,8 @@ import xshape.model.Shape;
 import xshape.model.ShapeFactory;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class XShape {
     protected ElementFactory _factory = null;
@@ -17,6 +19,8 @@ public abstract class XShape {
     protected ToolBar toolbarV;
 
     protected ToolBar toolbarH;
+
+    protected List<Shape> currentSelection = new ArrayList<>();
 
     // TODO : remove all of that to a Builder :
     private int BTN_SIZE = 40 ;

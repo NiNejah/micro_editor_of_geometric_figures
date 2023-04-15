@@ -1,5 +1,5 @@
 package xshape.model;
 
-public abstract class ShapeGroup {
+public class ShapeGroupAwt {
     // TODO
 }
