@@ -4,9 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -14,7 +12,10 @@ import javafx.stage.Stage;
 import xshape.model.*;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 public class FxApp extends XShape {
 
@@ -131,7 +132,10 @@ public class FxApp extends XShape {
         MenuItem item1 = new MenuItem("Group");
         MenuItem item2 = new MenuItem("Degroup");
         if(!(n instanceof Group)) item2.setDisable(true);
-        MenuItem item3 = new MenuItem("Edit");
+        Menu editMenu = new Menu("Edit");
+        MenuItem edit1 = new MenuItem("Width");
+        MenuItem edit2 = new MenuItem("Height");
+        editMenu.getItems().addAll(edit1, edit2);
 
         item1.setOnAction(e -> {
             createGroup();
@@ -139,8 +143,11 @@ public class FxApp extends XShape {
         item2.setOnAction(e -> {
             destroyGroup((ShapeGroup) graphToModel.get(n));
         });
+        edit1.setOnAction(e -> {
+            editShape(graphToModel.get(n), "width");
+        });
 
-        menu.getItems().addAll(item1, item2, item3);
+        menu.getItems().addAll(item1, item2, editMenu);
         menu.show(n, Side.BOTTOM, 0, 0);
     }
 
@@ -187,5 +194,32 @@ public class FxApp extends XShape {
             shape.setStrokeWidth(0);
             shape.setStroke(Color.TRANSPARENT);
         }
+    }
+
+    protected void editShape(Shape s, String parameter){
+        switch (parameter){
+            case "width":
+                TextInputDialog dialog = new TextInputDialog(String.valueOf(s.size().getX()));
+                dialog.setTitle("Set width");
+                dialog.setContentText("Width :");
+                Optional<String> result = dialog.showAndWait();
+
+                if(result.isPresent() && isNumeric(result.get())){
+                    ((Rectangle) s).setWidth(Double.parseDouble(result.get()));
+                }
+        }
+        s.update();
+    }
+
+    private boolean isNumeric(String txt){
+        if (txt == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(txt);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 }

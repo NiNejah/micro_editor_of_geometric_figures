@@ -31,6 +31,15 @@ public abstract class Rectangle extends AShape {
         if(b >= 0 && b <= 256) this.colorB = b;
     }
 
+    @Override
+    public Point2D size(){
+        return new Point2D.Double(this.width, this.height);
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
     public Shape clone(){
         return null;
     }
