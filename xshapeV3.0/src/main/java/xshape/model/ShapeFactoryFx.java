@@ -1,6 +1,7 @@
 package xshape.model;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 
 public class ShapeFactoryFx implements ShapeFactory{
 
@@ -9,5 +10,15 @@ public class ShapeFactoryFx implements ShapeFactory{
     public Rectangle createRectangle(double posX, double posY, double height, double width) {
         return new RectangleFx(width, height, 0, 0, new Point2D.Double(posX, posY),
                 0, 255, 0, 0);
+    }
+
+    @Override
+    public ShapeGroup createShapeGroup() {
+        return new ShapeGroupFx();
+    }
+
+    @Override
+    public ShapeGroup createShapeGroup(List<Shape> shapes) {
+        return new ShapeGroupFx(shapes);
     }
 }

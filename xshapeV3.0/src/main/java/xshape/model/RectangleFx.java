@@ -48,5 +48,15 @@ public class RectangleFx extends Rectangle {
 		return new RectangleFx(this);
 	}
 
+	@Override
+	public void update(){
+		System.out.println(position());
+		_adapted.setX(position().getX()- width/2);
+		_adapted.setY(position().getY()- height/2);
+		_adapted.setWidth(width);
+		_adapted.setHeight(height);
+		_adapted.setFill(Color.rgb(colorR, colorG, colorB));
+
+	}
 
 }

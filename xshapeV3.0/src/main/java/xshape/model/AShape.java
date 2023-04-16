@@ -87,4 +87,12 @@ public abstract class AShape implements Shape {
     public Shape clone() {
         return null;
     }
+
+    public Point2D offset(Point2D pos){
+        double offsetX = pos.getX() - position.x;
+        double offsetY = pos.getY() - position.y;
+        return new Point2D.Double(offsetX, offsetY);
+    }
+
+    public void update(){}
 }
