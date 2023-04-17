@@ -3,6 +3,7 @@ package xshape.model;
 import xshape.Element;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 
 public interface Shape extends Element {
 	Shape translate(Point2D vec);
@@ -18,4 +19,9 @@ public interface Shape extends Element {
 	public Shape clone();
 
 	public void update();
+
+	public double[] getRGB();
+
+	public void setColor(double r, double g, double b);
+	public List<String> editableParameters();
 }

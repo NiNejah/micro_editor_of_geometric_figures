@@ -3,17 +3,21 @@ package xshape.model;
 import xshape.Element;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class AShape implements Shape {
     private Point2D.Double position;
     private double rotation;
-    protected int colorR, colorB, colorG;
+    protected double colorR, colorB, colorG;
     private Point2D.Double rotationCenter;
     private double translationX, translationY;
 
     public AShape(Point2D.Double pos, double rot, Point2D.Double roC, double trX,
-                  double trY, int red, int green, int blue){
+                  double trY, double red, double green, double blue){
         this.position = pos;
+        this.rotationCenter = pos;
         this.rotation = rot;
         this.colorR = red; this.colorB = blue; this.colorG = green;
         this.rotationCenter = roC;
@@ -31,7 +35,25 @@ public abstract class AShape implements Shape {
     }
 
     @Override
+    public List<String> editableParameters() {
+        List<String> parameters = Arrays.asList(new String[]{"rotation", "color"});
+        return parameters;
+    }
+
+    @Override
     public Object draw() {return null;}
+
+    public double[] getRGB(){
+        double[] rgb = new double[]{colorR, colorG, colorB};
+        return rgb;
+    }
+
+    @Override
+    public void setColor(double r, double g, double b) {
+        this.colorR = r;
+        this.colorG = g;
+        this.colorB = b;
+    }
 
     @Override
     public Point2D size() {

@@ -9,7 +9,7 @@ public class ShapeFactoryFx implements ShapeFactory{
     @Override
     public Rectangle createRectangle(double posX, double posY, double height, double width) {
         return new RectangleFx(width, height, 0, 0, new Point2D.Double(posX, posY),
-                0, 255, 0, 0);
+                0, 1.0, 0, 0);
     }
 
     @Override

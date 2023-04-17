@@ -5,6 +5,7 @@ import xshape.Element;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,6 +32,16 @@ public abstract class ShapeGroup implements Shape{
                 add(s.clone());
             }
         }
+    }
+
+    public List<String> editableParameters(){
+        List<String> parameters = Arrays.asList(new String[]{"Rotation", "Color"});
+        return parameters;
+    }
+
+    @Override
+    public double[] getRGB() {
+        return new double[0];
     }
 
     public abstract void add(Shape s);
@@ -133,7 +144,9 @@ public abstract class ShapeGroup implements Shape{
 
     @Override
     public void rotation(double angle) {
-
+        for(Shape s: childShapes){
+            s.rotation(angle);
+        }
     }
 
     @Override
@@ -153,6 +166,13 @@ public abstract class ShapeGroup implements Shape{
     @Override
     public Element size(Point2D vec) {
         return null;
+    }
+
+    @Override
+    public void setColor(double r, double g, double b) {
+        for (Shape s: childShapes){
+            s.setColor(r, g, b);
+        }
     }
 
     public Shape clone() {

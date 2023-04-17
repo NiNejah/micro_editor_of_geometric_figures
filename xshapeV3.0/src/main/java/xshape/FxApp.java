@@ -4,9 +4,12 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import xshape.model.*;
@@ -41,7 +44,7 @@ public class FxApp extends XShape {
         this.toolbarH = (ToolBar) pane.getTop();
         this.toolbarV = (ToolBar) pane.getLeft();
         Rectangle rectangle = this._shapefactory.createRectangle(0, 0, 50, 50);
-        rectangle.setColor(0, 0, 255);
+        rectangle.setColor(0, 0, 1.0);
         Node rectNode = (javafx.scene.shape.Rectangle) rectangle.draw();
         toolbarV.getItems().add(rectNode);
         ObservableList<Node> nodes = toolbarV.getItems();
@@ -63,6 +66,7 @@ public class FxApp extends XShape {
                 if(e.getSceneX() > this.toolbarV.getWidth()){
                     Shape newShape = shape.clone();
                     newShape.setPosition(new Point2D.Double(e.getSceneX(), e.getSceneY()));
+                    newShape.rotationCenter(new Point2D.Double(e.getSceneX(), e.getSceneY()));
                     addShapeToCanvas(newShape);
                 }
             }
@@ -133,18 +137,19 @@ public class FxApp extends XShape {
         MenuItem item2 = new MenuItem("Degroup");
         if(!(n instanceof Group)) item2.setDisable(true);
         Menu editMenu = new Menu("Edit");
-        MenuItem edit1 = new MenuItem("Width");
-        MenuItem edit2 = new MenuItem("Height");
-        editMenu.getItems().addAll(edit1, edit2);
+        for(String parameter: graphToModel.get(n).editableParameters()){
+            MenuItem edit = new MenuItem(parameter);
+            edit.setOnAction(e -> {
+                editShape(graphToModel.get(n), parameter);
+            });
+            editMenu.getItems().add(edit);
+        }
 
         item1.setOnAction(e -> {
             createGroup();
         });
         item2.setOnAction(e -> {
             destroyGroup((ShapeGroup) graphToModel.get(n));
-        });
-        edit1.setOnAction(e -> {
-            editShape(graphToModel.get(n), "width");
         });
 
         menu.getItems().addAll(item1, item2, editMenu);
@@ -197,9 +202,10 @@ public class FxApp extends XShape {
     }
 
     protected void editShape(Shape s, String parameter){
+        TextInputDialog dialog;
         switch (parameter){
-            case "width":
-                TextInputDialog dialog = new TextInputDialog(String.valueOf(s.size().getX()));
+            case "Width":
+                dialog = new TextInputDialog(String.valueOf(s.size().getX()));
                 dialog.setTitle("Set width");
                 dialog.setContentText("Width :");
                 Optional<String> result = dialog.showAndWait();
@@ -207,6 +213,46 @@ public class FxApp extends XShape {
                 if(result.isPresent() && isNumeric(result.get())){
                     ((Rectangle) s).setWidth(Double.parseDouble(result.get()));
                 }
+                break;
+            case "Height":
+                dialog = new TextInputDialog(String.valueOf(s.size().getY()));
+                dialog.setTitle("Set height");
+                dialog.setContentText("Height :");
+                result = dialog.showAndWait();
+
+                if(result.isPresent() && isNumeric(result.get())){
+                    ((Rectangle) s).setHeight(Double.parseDouble(result.get()));
+                }
+                break;
+            case "Rotation":
+                dialog = new TextInputDialog(String.valueOf(s.rotation()));
+                dialog.setTitle("Set rotation");
+                dialog.setContentText("Rotation :");
+                result = dialog.showAndWait();
+
+                if(result.isPresent() && isNumeric(result.get())){
+                    s.rotation(Double.parseDouble(result.get()));
+                }
+                break;
+            case "Color":
+                double[] rgb = s.getRGB();
+                ColorPicker colorPicker;
+                if(rgb.length > 0) colorPicker = new ColorPicker(Color.color(rgb[0], rgb[1], rgb[2]));
+                else colorPicker = new ColorPicker();
+                Stage stage = new Stage();
+                GridPane gp = new GridPane();
+                stage.setScene(new Scene(gp, 100, 100));
+                gp.add(colorPicker, 0, 0);
+                Button btn = new Button("OK");
+                btn.setOnAction(e -> {
+                    Color chosenColor = colorPicker.getValue();
+                    System.out.println(chosenColor.getRed() + " " + chosenColor.getGreen() + " " + chosenColor.getBlue());
+
+                    s.setColor(chosenColor.getRed(), chosenColor.getGreen(), chosenColor.getBlue());
+                    stage.close();
+                });
+                gp.add(btn, 0, 1);
+                stage.showAndWait();
         }
         s.update();
     }

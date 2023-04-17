@@ -1,13 +1,15 @@
 package xshape.model;
 
 import java.awt.geom.Point2D;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class Rectangle extends AShape {
 
     protected double width, height;
     protected double arcWidth, arcHeight;
     public Rectangle(double width, double height, double arcWidth, double arcHeight,
-            Point2D.Double pos, double rot, int red, int green, int blue) {
+            Point2D.Double pos, double rot, double red, double green, double blue) {
         super(pos, rot, pos, 0, 0, red, green, blue);
         this.width = width; this.height = height;
         this.arcWidth = arcWidth; this.arcHeight = arcHeight;
@@ -25,7 +27,7 @@ public abstract class Rectangle extends AShape {
         return this;
     }
 
-    public void setColor(int r, int g, int b){
+    public void setColor(double r, double g, double b){
         if(r >= 0 && r <= 256) this.colorR = r;
         if(g >= 0 && g <= 256) this.colorG = g;
         if(b >= 0 && b <= 256) this.colorB = b;
@@ -38,6 +40,16 @@ public abstract class Rectangle extends AShape {
 
     public void setWidth(double width) {
         this.width = width;
+    }
+
+    public void setHeight(double height){
+        this.height = height;
+    }
+
+    @Override
+    public List<String> editableParameters(){
+        List<String> parameters = Arrays.asList(new String[]{"Width", "Height", "Rotation", "Color"});
+        return parameters;
     }
 
     public Shape clone(){
