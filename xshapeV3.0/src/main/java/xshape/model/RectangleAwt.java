@@ -3,6 +3,7 @@ package xshape.model;
 import xshape.AwtContext;
 import xshape.model.Rectangle;
 
+import javax.swing.*;
 import java.awt.geom.Point2D;
 import java.awt.*;
 
@@ -14,21 +15,44 @@ public class RectangleAwt extends Rectangle {
 		super(width, height, arcWidth, arcHeight, pos, rot, red, green, blue);
 	}
 
-	@Override
-	public Object draw() {
-        Graphics g = AwtContext.instance().graphics();
-        Color c = g.getColor();
+	public Object draw2() {
 		Point2D pos = position();
 		Point2D size = size();
-        g.setColor(Color.BLUE);
-        g.fillRect((int)(pos.getX() - size.getX()/2),
-        (int)(pos.getY() - size.getY()/2),        
-        (int)(size.getX()),
-        (int)(size.getY()));
-        g.setColor(c);
+		JPanel jp = new JPanel();
+		double[] rgb = getRGB();
+		jp.setBackground(new Color((int) rgb[0], (int) rgb[1], (int) rgb[2]));
+		jp.setBounds((int) pos.getX(),(int)  pos.getY(),(int) size.getX(),(int) size.getY());
+
+//        Graphics g = AwtContext.instance().graphics();
+//        Color c = g.getColor();
+
+//        g.setColor(Color.BLUE);
+//        g.fillRect((int)(pos.getX() - size.getX()/2),
+//        (int)(pos.getY() - size.getY()/2),
+//        (int)(size.getX()),
+//        (int)(size.getY()));
+//        g.setColor(c);
 		// TODO
-		return null;
+		return jp;
 	}
+    @Override
+    public Object draw() {
+        Point2D pos = position();
+        Point2D size = size();
+        JPanel jp = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.rotate(Math.toRadians(_rotation), _centerOfRotation.getX(), _centerOfRotation.getY());
+                super.paintComponent(g);
+                g2d.fillRect(0, 0, (int) size.getX(), (int) size.getY());
+            }
+        };
+        double[] rgb = getRGB();
+        jp.setBackground(new Color((int) rgb[0], (int) rgb[1], (int) rgb[2]));
+        jp.setBounds((int) pos.getX(), (int) pos.getY(), (int) size.getX(), (int) size.getY());
+        return jp;
+    }
 	@Override
 	public double rotation(){return _rotation;};
 	@Override

@@ -21,7 +21,12 @@ public class ElementFactoryAwt implements ElementFactory {
     }
     @Override
     public Toolbar createToolbar(double posX, double posY, double height, double width, ToolbarStyle style) {
-        return new ToolbarAwt(new ShapeFactoryAwt(), style);
+        if(style == ToolbarStyle.VERTICAL){
+            return new ToolbarAwt(width, height, new Point2D.Double(posX, posY),new ShapeFactoryAwt());
+        }else if (style == ToolbarStyle.HORIZONTAL){
+            return null ;
+        }
+        return null ;
     }
 
     @Override

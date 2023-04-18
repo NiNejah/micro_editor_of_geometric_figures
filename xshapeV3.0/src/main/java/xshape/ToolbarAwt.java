@@ -1,23 +1,33 @@
 package xshape;
 
-import xshape.model.Rectangle;
-import xshape.model.ShapeFactory;
+import xshape.model.*;
 
-public class ToolbarAwt extends ElementAbstract implements xshape.Toolbar{
+import javax.swing.*;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Rectangle rectangle;
+public class ToolbarAwt extends RectangleAwt implements xshape.Toolbar{
 
-    private ToolbarStyle style;
+    private List<Shape> shapes = new ArrayList<>();
 
-    private ShapeFactory factory;
+    private ToolbarStyle _style  = ToolbarStyle.VERTICAL;
 
-    public ToolbarAwt(ShapeFactory fx, ToolbarStyle style){
-        this.factory = fx;
-        this.style = style;
+    private ShapeFactory _factory;
+
+    public ToolbarAwt(double width, double height, Point2D.Double pos, ShapeFactory shapeFactory) {
+        super(width,height,0,0,pos,0,125,125,125);
+        _factory = shapeFactory ;
+    }
+    public void addShape(Shape s){
+        shapes.add(s);
     }
     @Override
     public Object draw() {
-        // TODO
-        return null;
+        JPanel jp = (JPanel) super.draw();
+        for (Shape shape: shapes){
+            jp.add((JPanel) shape.draw());
+        }
+        return jp;
     }
 }
