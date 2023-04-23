@@ -4,12 +4,13 @@ import javafx.scene.Group;
 import xshape.Element;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class ShapeGroup implements Shape{
+public abstract class ShapeGroup implements Shape, Serializable {
     // TODO
     protected List<Shape> childShapes;
 

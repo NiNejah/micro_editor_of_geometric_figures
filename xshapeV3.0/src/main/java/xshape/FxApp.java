@@ -10,11 +10,14 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import xshape.model.*;
 
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +29,8 @@ public class FxApp extends XShape {
     private HashMap<Node, Shape> graphToModel = new HashMap<>();
 
     private Stage stage;
+
+    private MenuBar menu;
 
 
     public FxApp(Stage stage){
@@ -43,6 +48,24 @@ public class FxApp extends XShape {
         BorderPane pane = (BorderPane) builder.build();
         this.toolbarH = (ToolBar) pane.getTop();
         this.toolbarV = (ToolBar) pane.getLeft();
+
+        MenuBar menu = new MenuBar();
+        Menu file = new Menu("File");
+        MenuItem save = new MenuItem("Save");
+        MenuItem load = new MenuItem("Load");
+        file.getItems().addAll(load, save);
+        menu.getMenus().add(file);
+        load.setOnAction(e -> {
+            loadFile();
+        });
+        save.setOnAction(e -> {
+            fileChooserEvent();
+        });
+        this.menu = menu;
+
+        VBox verticalTop = new VBox(menu, toolbarH);
+        pane.setTop(verticalTop);
+
         Rectangle rectangle = this._shapefactory.createRectangle(0, 0, 50, 50);
         rectangle.setColor(0, 0, 1.0);
         Node rectNode = (javafx.scene.shape.Rectangle) rectangle.draw();
@@ -57,13 +80,43 @@ public class FxApp extends XShape {
         FxApplication.pane = pane;
     }
 
+    private void fileChooserEvent(){
+        Stage dialog = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save file");
+        File file = fileChooser.showSaveDialog(dialog);
+        if (file != null){
+            serialize(file.getAbsolutePath());
+        }
+    }
+
+    private void loadFile(){
+        Stage dialog = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose file");
+        File file = fileChooser.showOpenDialog(dialog);
+        if (file != null){
+            ArrayList<Shape> newCanvas = deserialize(file.getAbsolutePath());
+            FxApplication._root.getChildren().clear();
+            graphToModel.clear();
+
+            this.canvas = new Canvas();
+            for(Shape s: newCanvas){
+                if(s instanceof Rectangle){
+                    RectangleFx rect = new RectangleFx((Rectangle) s);
+                    addShapeToCanvas(rect);
+                }
+            }
+        }
+    }
+
     public void toolbarShapeEvents(Node n){
         n.setOnMouseReleased(e -> {
             Shape shape = graphToModel.get(n);
-            if(e.getSceneX() > 0 && e.getSceneY() > 0 && e.getSceneX() <= 40 && e.getSceneY() <= 40){
+            if(e.getSceneX() > 0 && e.getSceneY() > menu.getHeight() && e.getSceneX() <= 40 && e.getSceneY() <= menu.getHeight() + toolbarH.getHeight()){
                 removeShapeFromToolbar(shape);
             } else {
-                if(e.getSceneX() > this.toolbarV.getWidth()){
+                if(e.getSceneX() > this.toolbarV.getWidth() && e.getSceneY() > menu.getHeight() + toolbarH.getHeight()){
                     Shape newShape = shape.clone();
                     newShape.setPosition(new Point2D.Double(e.getSceneX(), e.getSceneY()));
                     newShape.rotationCenter(new Point2D.Double(e.getSceneX(), e.getSceneY()));
@@ -86,10 +139,11 @@ public class FxApp extends XShape {
         });
         n.setOnMouseReleased(e -> {
             Shape shape = graphToModel.get(n);
-            if(e.getSceneX() > 0 && e.getSceneY() > 0 && e.getSceneX() <= 40 && e.getSceneY() <= 40){
+            if(e.getSceneX() > 0 && e.getSceneY() > menu.getHeight() && e.getSceneX() <= 40 && e.getSceneY() <= menu.getHeight() + toolbarH.getHeight()){
                 removeShapeFromCanvas(shape);
             } else {
-                if(e.getSceneX() < this.toolbarV.getWidth()){
+                System.out.println(menu.getHeight() + toolbarH.getHeight());
+                if(e.getSceneX() < this.toolbarV.getWidth() && e.getSceneY() > menu.getHeight() + toolbarH.getHeight()){
                     Shape newShape = shape.clone();
                     addShapeToToolbar(newShape);
                 }
@@ -120,11 +174,11 @@ public class FxApp extends XShape {
 
     public void addShapeToToolbar(Shape s){
         Node newNode = (Node) s.draw();
-        if (newNode instanceof Group){
+        /*if (newNode instanceof Group){
             for(Node node: ((Group) newNode).getChildren()){
                 System.out.println(node);
             }
-        }
+        }*/
         graphToModel.put(newNode, s);
         toolbarV.getItems().add(newNode);
         toolbarShapeEvents(newNode);

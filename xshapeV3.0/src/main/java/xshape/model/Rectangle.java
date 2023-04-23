@@ -1,10 +1,11 @@
 package xshape.model;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class Rectangle extends AShape {
+public class Rectangle extends AShape implements Serializable {
 
     protected double width, height;
     protected double arcWidth, arcHeight;
@@ -53,6 +54,6 @@ public abstract class Rectangle extends AShape {
     }
 
     public Shape clone(){
-        return null;
+        return new Rectangle(this);
     }
 }

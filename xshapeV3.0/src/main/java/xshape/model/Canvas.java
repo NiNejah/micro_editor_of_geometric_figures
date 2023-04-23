@@ -1,9 +1,10 @@
 package xshape.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Canvas {
+public class Canvas implements Serializable {
 
     private ArrayList<Shape> shapes;
 

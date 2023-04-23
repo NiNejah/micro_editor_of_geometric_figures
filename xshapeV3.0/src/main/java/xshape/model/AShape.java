@@ -3,11 +3,12 @@ package xshape.model;
 import xshape.Element;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AShape implements Shape {
+public abstract class AShape implements Shape, Serializable {
     private Point2D.Double position;
     private double rotation;
     protected double colorR, colorB, colorG;

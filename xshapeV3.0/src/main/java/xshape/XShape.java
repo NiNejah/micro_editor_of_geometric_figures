@@ -2,10 +2,12 @@ package xshape;
 
 import javafx.scene.control.ToolBar;
 import xshape.model.Canvas;
+import xshape.model.Rectangle;
 import xshape.model.Shape;
 import xshape.model.ShapeFactory;
 
 import java.awt.geom.Point2D;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +42,11 @@ public abstract class XShape {
     }
 
     protected void createScene() {
-        Shape shape = _shapefactory.createRectangle(100, 100, 50, 50);
+        /*Shape shape = _shapefactory.createRectangle(100, 100, 50, 50);
         shape.translate(new Point2D.Double(100, 50));
         addShapeToCanvas(shape);
         Shape shape2 = _shapefactory.createRectangle(250, 250, 75, 20);
-        addShapeToCanvas(shape2);
+        addShapeToCanvas(shape2);*/
         //Element saveBtn =  _factory.createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
         //Element doBtn =  _factory.createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do","redo.png");
     }
@@ -62,6 +64,49 @@ public abstract class XShape {
     public void draw() {
         if (this.canvas.isEmpty()) {
             createScene();
+        }
+    }
+
+    protected void serialize(String filename) {
+        try{
+            FileOutputStream file = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+            ArrayList<Shape> toSerialize = new ArrayList<>();
+
+            for(Shape s: canvas.getShapes()){
+                if(s instanceof Rectangle){
+                    Rectangle rect = new Rectangle((Rectangle) s);
+                    toSerialize.add(rect);
+                }
+            }
+            out.writeObject(toSerialize);
+
+            out.flush();
+            out.close();
+            file.close();
+            System.out.println("Serialization complete");
+        } catch (FileNotFoundException fileNotFoundException){
+            System.out.println("The file " + filename + " doesn't exist.");
+        } catch (IOException ioException){
+            ioException.printStackTrace();
+        }
+    }
+
+    protected ArrayList deserialize(String filename){
+        try{
+            FileInputStream file = new FileInputStream(filename);
+            ObjectInputStream in = new ObjectInputStream(file);
+
+            ArrayList<Shape> shapes = (ArrayList<Shape>) in.readObject();
+            in.close();
+            return shapes;
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

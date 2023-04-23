@@ -1,11 +1,12 @@
 package xshape.model;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
-public class RectangleFx extends Rectangle {
+public class RectangleFx extends Rectangle implements Serializable {
 
 	javafx.scene.shape.Rectangle _adapted = new javafx.scene.shape.Rectangle();
 
@@ -14,7 +15,7 @@ public class RectangleFx extends Rectangle {
 		super(width, height, arcWidth, arcHeight, pos, rot, red, green, blue);
 	}
 
-	public RectangleFx(RectangleFx r){
+	public RectangleFx(Rectangle r){
 		super(r);
 	}
 
