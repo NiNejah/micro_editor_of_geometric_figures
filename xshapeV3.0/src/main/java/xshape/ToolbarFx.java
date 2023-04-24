@@ -13,8 +13,6 @@ import java.io.InputStream;
 
 public class ToolbarFx extends ElementAbstract implements xshape.Toolbar{
 
-    public Rectangle rectangle;
-
     private ToolbarStyle style;
 
     private ShapeFactory factory;

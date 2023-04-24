@@ -94,6 +94,7 @@ public abstract class XShape {
 
     protected ArrayList deserialize(String filename){
         try{
+            System.out.println(filename);
             FileInputStream file = new FileInputStream(filename);
             ObjectInputStream in = new ObjectInputStream(file);
 

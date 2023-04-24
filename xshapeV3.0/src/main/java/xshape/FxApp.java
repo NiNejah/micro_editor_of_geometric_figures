@@ -17,7 +17,10 @@ import javafx.stage.Stage;
 import xshape.model.*;
 
 import java.awt.geom.Point2D;
-import java.io.File;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +39,16 @@ public class FxApp extends XShape {
     public FxApp(Stage stage){
         super();
         this.stage = stage;
+        stage.setOnCloseRequest(e -> {
+            File file = new File(this.getClass().getResource(".").getFile() + "/toolbar");
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            serializeToolbar(file.getAbsolutePath());
+
+        });
     }
     @Override
     protected void createFactories() {
@@ -66,18 +79,22 @@ public class FxApp extends XShape {
         VBox verticalTop = new VBox(menu, toolbarH);
         pane.setTop(verticalTop);
 
-        Rectangle rectangle = this._shapefactory.createRectangle(0, 0, 50, 50);
-        rectangle.setColor(0, 0, 1.0);
-        Node rectNode = (javafx.scene.shape.Rectangle) rectangle.draw();
-        toolbarV.getItems().add(rectNode);
-        ObservableList<Node> nodes = toolbarV.getItems();
-        graphToModel.put(rectNode, rectangle);
-        for(Node n: nodes){
-            toolbarShapeEvents(n);
-        }
-
         this.stage.getScene().setRoot(pane);
         FxApplication.pane = pane;
+
+        loadToolbar();
+
+        if(toolbarV.getItems().isEmpty()){
+            Rectangle rectangle = this._shapefactory.createRectangle(0, 0, 50, 50);
+            rectangle.setColor(0, 0, 1.0);
+            Node rectNode = (javafx.scene.shape.Rectangle) rectangle.draw();
+            toolbarV.getItems().add(rectNode);
+            ObservableList<Node> nodes = toolbarV.getItems();
+            graphToModel.put(rectNode, rectangle);
+            for(Node n: nodes){
+                toolbarShapeEvents(n);
+            }
+        }
     }
 
     private void fileChooserEvent(){
@@ -107,6 +124,55 @@ public class FxApp extends XShape {
                     addShapeToCanvas(rect);
                 }
             }
+        }
+    }
+
+    private void loadToolbar(){
+        URL resource = this.getClass().getResource("toolbar");
+        if(resource != null){
+            File toolbarFile = null;
+            try {
+                toolbarFile = Paths.get(resource.toURI()).toFile();
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+            if(toolbarFile.exists()){
+                String toolbarPath = toolbarFile.getAbsolutePath();
+                ArrayList<Shape> toolbarShapes = deserialize(toolbarPath);
+                for(Shape s: toolbarShapes){
+                    if(s instanceof Rectangle){
+                        RectangleFx rect = new RectangleFx((Rectangle) s);
+                        addShapeToToolbar(rect);
+                    }
+                }
+            }
+        }
+    }
+
+    private void serializeToolbar(String filename){
+        try{
+            FileOutputStream file = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+            ArrayList<Shape> toSerialize = new ArrayList<>();
+
+            ObservableList<Node> toolbarElements = toolbarV.getItems();
+            for(Node node: toolbarElements){
+                Shape s = graphToModel.get(node);
+                if(s instanceof Rectangle){
+                    Rectangle rect = new Rectangle((Rectangle) s);
+                    toSerialize.add(rect);
+                }
+            }
+            out.writeObject(toSerialize);
+
+            out.flush();
+            out.close();
+            file.close();
+            System.out.println("Serialization complete");
+        } catch (FileNotFoundException fileNotFoundException){
+            System.out.println("The file " + filename + " doesn't exist.");
+        } catch (IOException ioException){
+            ioException.printStackTrace();
         }
     }
 
