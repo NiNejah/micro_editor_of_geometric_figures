@@ -31,6 +31,9 @@ public class FxApp extends XShape {
     // TODO ajouter observateur dans cette classe (controller)
     private HashMap<Node, Shape> graphToModel = new HashMap<>();
 
+    private List<ShapeOperation> operations;
+    private int operationPointer;
+
     private Stage stage;
 
     private MenuBar menu;
@@ -39,6 +42,8 @@ public class FxApp extends XShape {
     public FxApp(Stage stage){
         super();
         this.stage = stage;
+        this.operations = new ArrayList<>();
+        this.operationPointer = 0;
         stage.setOnCloseRequest(e -> {
             File file = new File(this.getClass().getResource(".").getFile() + "/toolbar");
             try {
@@ -66,13 +71,23 @@ public class FxApp extends XShape {
         Menu file = new Menu("File");
         MenuItem save = new MenuItem("Save");
         MenuItem load = new MenuItem("Load");
+        Menu edit = new Menu("Edit");
+        MenuItem undo = new MenuItem("Undo");
+        MenuItem redo = new MenuItem("Redo");
         file.getItems().addAll(load, save);
-        menu.getMenus().add(file);
+        edit.getItems().addAll(undo, redo);
+        menu.getMenus().addAll(file, edit);
         load.setOnAction(e -> {
             loadFile();
         });
         save.setOnAction(e -> {
             fileChooserEvent();
+        });
+        undo.setOnAction(e -> {
+            undo();
+        });
+        redo.setOnAction(e -> {
+            redo();
         });
         this.menu = menu;
 
@@ -331,7 +346,9 @@ public class FxApp extends XShape {
                 Optional<String> result = dialog.showAndWait();
 
                 if(result.isPresent() && isNumeric(result.get())){
-                    ((Rectangle) s).setWidth(Double.parseDouble(result.get()));
+                    ShapeWidthOperation widthOperation = new ShapeWidthOperation((Rectangle) s, Double.parseDouble(result.get()));
+                    executeNewOperation(widthOperation);
+                    //((Rectangle) s).setWidth(Double.parseDouble(result.get()));
                 }
                 break;
             case "Height":
@@ -341,7 +358,9 @@ public class FxApp extends XShape {
                 result = dialog.showAndWait();
 
                 if(result.isPresent() && isNumeric(result.get())){
-                    ((Rectangle) s).setHeight(Double.parseDouble(result.get()));
+                    ShapeHeightOperation heightOperation = new ShapeHeightOperation((Rectangle) s, Double.parseDouble(result.get()));
+                    executeNewOperation(heightOperation);
+                    //((Rectangle) s).setHeight(Double.parseDouble(result.get()));
                 }
                 break;
             case "Rotation":
@@ -351,7 +370,9 @@ public class FxApp extends XShape {
                 result = dialog.showAndWait();
 
                 if(result.isPresent() && isNumeric(result.get())){
-                    s.rotation(Double.parseDouble(result.get()));
+                    ShapeRotationOperation rotationOperation = new ShapeRotationOperation(s, Double.parseDouble(result.get()));
+                    executeNewOperation(rotationOperation);
+                    //s.rotation(Double.parseDouble(result.get()));
                 }
                 break;
             case "Color":
@@ -366,15 +387,40 @@ public class FxApp extends XShape {
                 Button btn = new Button("OK");
                 btn.setOnAction(e -> {
                     Color chosenColor = colorPicker.getValue();
-                    System.out.println(chosenColor.getRed() + " " + chosenColor.getGreen() + " " + chosenColor.getBlue());
-
-                    s.setColor(chosenColor.getRed(), chosenColor.getGreen(), chosenColor.getBlue());
+                    //System.out.println(chosenColor.getRed() + " " + chosenColor.getGreen() + " " + chosenColor.getBlue());
+                    ShapeColorOperation colorOperation = new ShapeColorOperation(s, chosenColor.getRed(), chosenColor.getGreen(), chosenColor.getBlue());
+                    executeNewOperation(colorOperation);
+                    //s.setColor(chosenColor.getRed(), chosenColor.getGreen(), chosenColor.getBlue());
                     stage.close();
                 });
                 gp.add(btn, 0, 1);
                 stage.showAndWait();
         }
         s.update();
+    }
+
+    private void executeNewOperation(ShapeOperation operation){
+        int size = operations.size();
+        for(int i = size - 1; i >= operationPointer; i--){
+            this.operations.remove(i);
+        }
+        this.operations.add(operation);
+        operation.execute();
+        operationPointer++;
+    }
+
+    private void undo(){
+        if(operationPointer > 0){
+            this.operations.get(operationPointer - 1).undo();
+            operationPointer--;
+        }
+    }
+
+    private void redo(){
+        if(operationPointer < operations.size()){
+            this.operations.get(operationPointer).execute();
+            operationPointer++;
+        }
     }
 
     private boolean isNumeric(String txt){

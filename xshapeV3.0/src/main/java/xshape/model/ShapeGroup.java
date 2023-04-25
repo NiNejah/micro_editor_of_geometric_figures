@@ -159,6 +159,7 @@ public abstract class ShapeGroup implements Shape, Serializable {
     public void rotationCenter(Point2D.Double centerOfRotation) {
 
     }
+
     @Override
     public Point2D size() {
         return null;
