@@ -1,14 +1,13 @@
 package xshape;
 
 import xshape.model.Rectangle;
-import xshape.model.Shape;
 
-public class ShapeWidthOperation implements ShapeOperation{
+public class RectangleWidthOperation implements ShapeOperation{
     private Rectangle shape;
 
     private double width, oldWidth;
 
-    public ShapeWidthOperation(Rectangle shape, double width){
+    public RectangleWidthOperation(Rectangle shape, double width){
         this.shape = shape;
         this.width = width;
         this.oldWidth = shape.size().getX();

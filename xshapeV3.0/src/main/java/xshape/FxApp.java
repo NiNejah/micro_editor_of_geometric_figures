@@ -102,10 +102,13 @@ public class FxApp extends XShape {
         if(toolbarV.getItems().isEmpty()){
             Rectangle rectangle = this._shapefactory.createRectangle(0, 0, 50, 50);
             rectangle.setColor(0, 0, 1.0);
+            Polygon polygon = this._shapefactory.createPolygon(0, 0, 5, 40);
             Node rectNode = (javafx.scene.shape.Rectangle) rectangle.draw();
-            toolbarV.getItems().add(rectNode);
+            Node polyNode = (javafx.scene.shape.Polygon) polygon.draw();
+            toolbarV.getItems().addAll(rectNode, polyNode);
             ObservableList<Node> nodes = toolbarV.getItems();
             graphToModel.put(rectNode, rectangle);
+            graphToModel.put(polyNode, polygon);
             for(Node n: nodes){
                 toolbarShapeEvents(n);
             }
@@ -195,13 +198,15 @@ public class FxApp extends XShape {
         n.setOnMouseReleased(e -> {
             Shape shape = graphToModel.get(n);
             if(e.getSceneX() > 0 && e.getSceneY() > menu.getHeight() && e.getSceneX() <= 40 && e.getSceneY() <= menu.getHeight() + toolbarH.getHeight()){
-                removeShapeFromToolbar(shape);
+                ShapeToolbarRemoveOperation operation = new ShapeToolbarRemoveOperation(shape, this);
+                executeNewOperation(operation);
             } else {
                 if(e.getSceneX() > this.toolbarV.getWidth() && e.getSceneY() > menu.getHeight() + toolbarH.getHeight()){
                     Shape newShape = shape.clone();
                     newShape.setPosition(new Point2D.Double(e.getSceneX(), e.getSceneY()));
                     newShape.rotationCenter(new Point2D.Double(e.getSceneX(), e.getSceneY()));
-                    addShapeToCanvas(newShape);
+                    ShapeCanvasAddOperation operation = new ShapeCanvasAddOperation(newShape, this);
+                    executeNewOperation(operation);
                 }
             }
         });
@@ -221,12 +226,18 @@ public class FxApp extends XShape {
         n.setOnMouseReleased(e -> {
             Shape shape = graphToModel.get(n);
             if(e.getSceneX() > 0 && e.getSceneY() > menu.getHeight() && e.getSceneX() <= 40 && e.getSceneY() <= menu.getHeight() + toolbarH.getHeight()){
-                removeShapeFromCanvas(shape);
+                ShapeCanvasRemoveOperation operation = new ShapeCanvasRemoveOperation(shape, this);
+                executeNewOperation(operation);
             } else {
                 System.out.println(menu.getHeight() + toolbarH.getHeight());
                 if(e.getSceneX() < this.toolbarV.getWidth() && e.getSceneY() > menu.getHeight() + toolbarH.getHeight()){
                     Shape newShape = shape.clone();
-                    addShapeToToolbar(newShape);
+                    ShapeToolbarAddOperation operation = new ShapeToolbarAddOperation(newShape, this);
+                    executeNewOperation(operation);
+                }
+                else if(e.getSceneX() > this.toolbarV.getWidth() && e.getSceneY() > menu.getHeight() + toolbarH.getHeight()){
+                    ShapePositionOperation positionOperation = new ShapePositionOperation(shape, new Point2D.Double(e.getSceneX(), e.getSceneY()));
+                    executeNewOperation(positionOperation);
                 }
             }
         });
@@ -346,7 +357,7 @@ public class FxApp extends XShape {
                 Optional<String> result = dialog.showAndWait();
 
                 if(result.isPresent() && isNumeric(result.get())){
-                    ShapeWidthOperation widthOperation = new ShapeWidthOperation((Rectangle) s, Double.parseDouble(result.get()));
+                    RectangleWidthOperation widthOperation = new RectangleWidthOperation((Rectangle) s, Double.parseDouble(result.get()));
                     executeNewOperation(widthOperation);
                     //((Rectangle) s).setWidth(Double.parseDouble(result.get()));
                 }
@@ -358,7 +369,7 @@ public class FxApp extends XShape {
                 result = dialog.showAndWait();
 
                 if(result.isPresent() && isNumeric(result.get())){
-                    ShapeHeightOperation heightOperation = new ShapeHeightOperation((Rectangle) s, Double.parseDouble(result.get()));
+                    RectangleHeightOperation heightOperation = new RectangleHeightOperation((Rectangle) s, Double.parseDouble(result.get()));
                     executeNewOperation(heightOperation);
                     //((Rectangle) s).setHeight(Double.parseDouble(result.get()));
                 }

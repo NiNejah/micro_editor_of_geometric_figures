@@ -28,12 +28,6 @@ public class Rectangle extends AShape implements Serializable {
         return this;
     }
 
-    public void setColor(double r, double g, double b){
-        if(r >= 0 && r <= 256) this.colorR = r;
-        if(g >= 0 && g <= 256) this.colorG = g;
-        if(b >= 0 && b <= 256) this.colorB = b;
-    }
-
     @Override
     public Point2D size(){
         return new Point2D.Double(this.width, this.height);

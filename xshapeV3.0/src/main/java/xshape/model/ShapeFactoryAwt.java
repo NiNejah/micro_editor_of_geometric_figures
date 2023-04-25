@@ -23,4 +23,9 @@ public class ShapeFactoryAwt implements ShapeFactory{
         // TODO
         return null;
     }
+
+    @Override
+    public Polygon createPolygon(double posX, double posY, int sides, double sideLength) {
+        return new PolygonAwt(sides, sideLength, new Point2D.Double(posX, posY), 0, 0, 0, 1.0, 0, 0);
+    }
 }

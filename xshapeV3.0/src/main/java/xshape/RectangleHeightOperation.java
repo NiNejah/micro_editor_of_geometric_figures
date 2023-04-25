@@ -1,14 +1,13 @@
 package xshape;
 
 import xshape.model.Rectangle;
-import xshape.model.Shape;
 
-public class ShapeHeightOperation implements ShapeOperation{
+public class RectangleHeightOperation implements ShapeOperation{
     private Rectangle shape;
 
     private double height, oldHeight;
 
-    public ShapeHeightOperation(Rectangle shape, double height){
+    public RectangleHeightOperation(Rectangle shape, double height){
         this.shape = shape;
         this.height = height;
         this.oldHeight = shape.size().getY();

@@ -1,6 +1,7 @@
 package xshape;
 
 import xshape.model.Shape;
+import xshape.model.ShapeGroup;
 
 public class ShapeColorOperation implements ShapeOperation{
     private Shape shape;

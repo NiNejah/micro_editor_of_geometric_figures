@@ -36,7 +36,7 @@ public abstract class ShapeGroup implements Shape, Serializable {
     }
 
     public List<String> editableParameters(){
-        List<String> parameters = Arrays.asList(new String[]{"Rotation", "Color"});
+        List<String> parameters = Arrays.asList(new String[]{});
         return parameters;
     }
 
