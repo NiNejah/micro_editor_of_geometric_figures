@@ -47,23 +47,12 @@ public class ButtonAwt extends ElementAbstract implements xshape.Button {
         imageIcon.setImage(imageIcon.getImage().getScaledInstance((int) size().getX(), (int) size().getY(),Image.SCALE_SMOOTH));
         _adapted.setIcon(imageIcon);
     }
-
-
     @Override
     public Object draw() {
-        Graphics g = AwtContext.instance().graphics();
-//        Color c = g.getColor();
         Point2D pos = position();
         Point2D size = size();
-//        g.setColor(Color.BLUE); // Set the color to the background color of the JPanel
-//        g.fillRect((int) pos.getX(), (int) pos.getY(), (int) size.getX(), (int) size.getY()); // Fill the background with the same color
         addIcon(icon());
-        _adapted.setBackground(Color.GRAY);
         _adapted.setBounds((int) pos.getX(), (int) pos.getY(), (int) size.getX(), (int) size.getY());
-        _adapted.setVisible(true);
-//        _adapted.paint(g); // Draw the JButton on the Graphics object
-        _adapted.paint(g.create((int) pos.getX(), (int) pos.getY(), (int) size.getX(), (int) size.getY()));
-//        g.setColor(c);
         return _adapted;
     }
 }
