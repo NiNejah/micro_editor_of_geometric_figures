@@ -24,4 +24,5 @@ public interface Shape extends Element {
 
 	public void setColor(double r, double g, double b);
 	public List<String> editableParameters();
+	public boolean clicked(double mx,double my);
 }

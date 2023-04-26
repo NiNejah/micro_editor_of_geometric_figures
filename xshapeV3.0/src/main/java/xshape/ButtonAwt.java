@@ -47,12 +47,20 @@ public class ButtonAwt extends ElementAbstract implements xshape.Button {
         imageIcon.setImage(imageIcon.getImage().getScaledInstance((int) size().getX(), (int) size().getY(),Image.SCALE_SMOOTH));
         _adapted.setIcon(imageIcon);
     }
+
+    public JButton get_adapted() {
+        return _adapted;
+    }
+
     @Override
     public Object draw() {
         Point2D pos = position();
         Point2D size = size();
         addIcon(icon());
         _adapted.setBounds((int) pos.getX(), (int) pos.getY(), (int) size.getX(), (int) size.getY());
+        _adapted.setForeground(Color.cyan);
+        _adapted.setBackground(Color.lightGray);
+        _adapted.setBorder(BorderFactory.createEtchedBorder());
         return _adapted;
     }
 }

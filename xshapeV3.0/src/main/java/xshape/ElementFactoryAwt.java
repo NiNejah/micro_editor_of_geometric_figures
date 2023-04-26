@@ -27,10 +27,10 @@ public class ElementFactoryAwt implements ElementFactory {
     public Toolbar createToolbar(double posX, double posY, double height, double width, ToolbarStyle style) {
         if(style == ToolbarStyle.VERTICAL){
             ToolbarAwt toolbarAwt =  new ToolbarAwt(width, height, new Point2D.Double(posX, posY),new ShapeFactoryAwt());
-            Shape shape = createRectangle(100, 100, 50, 50);
+            Shape shape = createRectangle(0, 0, 50, 50);
             shape.translate(new Point2D.Double(100, 50));
             toolbarAwt.addShape(shape);
-            Shape shape2 = createRectangle(250, 250, 75, 20);
+            Shape shape2 = createRectangle(0, 0, 70, 50);
             toolbarAwt.addShape(shape2);
             return toolbarAwt ;
         }else if (style == ToolbarStyle.HORIZONTAL){
@@ -49,10 +49,11 @@ public class ElementFactoryAwt implements ElementFactory {
     @Override
     public Object createUI(Toolbar toolbarH, Toolbar toolbarV) {
         JPanel jp = new JPanel();
-        JPanel toolHJp = (JPanel) toolbarH.draw();
+//        jp.setBounds(0,0,500,500);
         JPanel toolVJp = (JPanel) toolbarV.draw();
-        jp.add(toolHJp);
         jp.add(toolVJp);
+        JPanel toolHJp = (JPanel) toolbarH.draw();
+        jp.add(toolHJp);
         return jp;
     }
 }

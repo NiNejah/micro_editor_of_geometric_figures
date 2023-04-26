@@ -1,11 +1,14 @@
 package xshape.model;
 
 import xshape.AwtContext;
+import xshape.Observateur;
 import xshape.model.Rectangle;
 
 import javax.swing.*;
 import java.awt.geom.Point2D;
 import java.awt.*;
+
+//import static com.sun.tools.doclint.Entity.and;
 
 public class RectangleAwt extends Rectangle {
 	private double _rotation;
@@ -39,18 +42,21 @@ public class RectangleAwt extends Rectangle {
     public Object draw() {
         Point2D pos = position();
         Point2D size = size();
-        JPanel jp = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.rotate(Math.toRadians(_rotation), _centerOfRotation.getX(), _centerOfRotation.getY());
-                super.paintComponent(g);
-                g2d.fillRect(0, 0, (int) size.getX(), (int) size.getY());
-            }
-        };
+        JPanel jp = new JPanel();
+//		{
+//            @Override
+//            protected void paintComponent(Graphics g) {
+//                Graphics2D g2d = (Graphics2D) g;
+//                g2d.rotate(Math.toRadians(_rotation), _centerOfRotation.getX(), _centerOfRotation.getY());
+//                super.paintComponent(g);
+//                g2d.fillRect(0, 0, (int) size.getX(), (int) size.getY());
+//            }
+//        };
         double[] rgb = getRGB();
         jp.setBackground(new Color((int) rgb[0], (int) rgb[1], (int) rgb[2]));
         jp.setBounds((int) pos.getX(), (int) pos.getY(), (int) size.getX(), (int) size.getY());
+		jp.setPreferredSize(new Dimension((int) size.getX(), (int) size.getY()));
+		jp.addMouseListener(new Observateur());
         return jp;
     }
 	@Override
@@ -59,4 +65,10 @@ public class RectangleAwt extends Rectangle {
 	public void rotation(double angle){_rotation = angle;};
 	public Point2D rotationCenter(){return _centerOfRotation;}
 	public void rotationCenter(Point2D centerOfRotation){ _centerOfRotation = centerOfRotation;}
+	public boolean clicked(double mx,double my){
+		Point2D pos = position();
+		Point2D size = size();
+		return  mx<=pos.getX() && my>pos.getY() &&
+				mx <= size.getX() && mx <= size.getY()  ;
+	}
 }

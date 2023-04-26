@@ -45,4 +45,9 @@ public class ShapeGroupFx extends ShapeGroup{
     public Shape clone() {
         return new ShapeGroupFx(this);
     }
+
+    @Override
+    public boolean clicked(double mx, double my) {
+        return false;
+    }
 }
