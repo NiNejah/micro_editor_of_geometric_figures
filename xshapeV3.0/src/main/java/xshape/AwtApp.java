@@ -26,6 +26,7 @@ class GUIHelper {
 }
 
 public class AwtApp extends XShape {
+    JPanel bars = null ;
     class JCanvas extends JPanel {
         XShape _xshape = null;
         public JCanvas(XShape xs) {
@@ -46,15 +47,25 @@ public class AwtApp extends XShape {
 
     @Override
     void run() {
+
         JCanvas jc = new JCanvas(this);
         jc.setBackground(Color.WHITE);
         jc.setPreferredSize(new Dimension(500, 500));
-        GUIHelper.showOnFrame(jc, "XShape Swing/AWT Rendering");        
+        jc.setLayout(new BorderLayout());
+
+        if(bars == null){
+            createUI();
+        }
+        jc.add(bars.getComponent(0),BorderLayout.WEST);
+        jc.add(bars.getComponent(0),BorderLayout.NORTH);
+        // TODO : add toolabar (v,h,canvas) panel here !
+        GUIHelper.showOnFrame(jc, "XShape Swing/AWT Rendering");
+
     }
 
     @Override
     protected void addShapeToCanvas(Shape shape) {
-
+        canvas.addShape(shape);
     }
 
     @Override
@@ -74,7 +85,9 @@ public class AwtApp extends XShape {
 
     @Override
     protected void createUI() {
-
+        createFactories();
+        UIBuilder builder = new UIBuilder(_factory) ;
+        this.bars = (JPanel) builder.build() ;
     }
 }
 

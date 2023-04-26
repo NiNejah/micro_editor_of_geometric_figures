@@ -23,8 +23,7 @@ public abstract class XShape {
     protected List<Shape> currentSelection = new ArrayList<>();
 
     // TODO : remove all of that to a Builder :
-    private int BTN_SIZE = 40 ;
-    private int BTN_MARGE = 25 ;
+
 
     public XShape(){
         this.canvas = new Canvas();
@@ -40,11 +39,11 @@ public abstract class XShape {
     }
 
     protected void createScene() {
-        Shape shape = _shapefactory.createRectangle(100, 100, 50, 50);
-        shape.translate(new Point2D.Double(100, 50));
-        addShapeToCanvas(shape);
-        Shape shape2 = _shapefactory.createRectangle(250, 250, 75, 20);
-        addShapeToCanvas(shape2);
+//        Shape shape = _shapefactory.createRectangle(100, 100, 50, 50);
+//        shape.translate(new Point2D.Double(100, 50));
+//        addShapeToCanvas(shape);
+//        Shape shape2 = _shapefactory.createRectangle(250, 250, 75, 20);
+//        addShapeToCanvas(shape2);
         //Element saveBtn =  _factory.createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
         //Element doBtn =  _factory.createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do","redo.png");
     }
