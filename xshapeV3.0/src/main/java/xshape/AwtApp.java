@@ -2,6 +2,7 @@ package xshape;
 
 import xshape.model.Shape;
 import xshape.model.ShapeFactoryAwt;
+import xshape.model.ShapeGroup;
 
 import java.awt.*;
 import javax.swing.*;
@@ -74,6 +75,16 @@ public class AwtApp extends XShape {
 
     @Override
     protected void createUI() {
+
+    }
+
+    @Override
+    protected void createGroup() {
+
+    }
+
+    @Override
+    protected void destroyGroup(ShapeGroup sg) {
 
     }
 }

@@ -46,6 +46,8 @@ public class Polygon extends AShape implements Serializable {
 
     public double getSideLength(){ return this.sideLength; }
 
+    public int getNbSides(){ return this.nbSides; }
+
     @Override
     public List<String> editableParameters(){
         List<String> parameters = Arrays.asList(new String[]{"Side length", "Number of sides", "Rotation", "Color"});

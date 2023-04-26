@@ -1,10 +1,7 @@
 package xshape;
 
 import javafx.scene.control.ToolBar;
-import xshape.model.Canvas;
-import xshape.model.Rectangle;
-import xshape.model.Shape;
-import xshape.model.ShapeFactory;
+import xshape.model.*;
 
 import java.awt.geom.Point2D;
 import java.io.*;
@@ -61,6 +58,10 @@ public abstract class XShape {
 
     protected abstract void createUI();
 
+    protected abstract void createGroup();
+
+    protected abstract void destroyGroup(ShapeGroup sg);
+
     public void draw() {
         if (this.canvas.isEmpty()) {
             createScene();
@@ -77,6 +78,13 @@ public abstract class XShape {
                 if(s instanceof Rectangle){
                     Rectangle rect = new Rectangle((Rectangle) s);
                     toSerialize.add(rect);
+                } else if(s instanceof Polygon){
+                    Polygon poly = new Polygon((Polygon) s);
+                    toSerialize.add(poly);
+                } else if(s instanceof ShapeGroup){
+                    ShapeGroup sg = new ShapeGroup((ShapeGroup) s);
+                    sg.setGenericChilds();
+                    toSerialize.add(sg);
                 }
             }
             out.writeObject(toSerialize);

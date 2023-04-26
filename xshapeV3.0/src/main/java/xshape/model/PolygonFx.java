@@ -15,7 +15,7 @@ public class PolygonFx extends xshape.model.Polygon {
         super(sides, length, pos, rot, trX, trY, red, green, blue);
     }
 
-    public PolygonFx(PolygonFx p){
+    public PolygonFx(xshape.model.Polygon p){
         super(p);
     }
 

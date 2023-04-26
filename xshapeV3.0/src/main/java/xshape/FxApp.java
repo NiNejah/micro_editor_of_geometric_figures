@@ -140,6 +140,13 @@ public class FxApp extends XShape {
                 if(s instanceof Rectangle){
                     RectangleFx rect = new RectangleFx((Rectangle) s);
                     addShapeToCanvas(rect);
+                } else if(s instanceof Polygon){
+                    PolygonFx poly = new PolygonFx((Polygon) s);
+                    addShapeToCanvas(poly);
+                } else if(s instanceof ShapeGroup){
+                    ShapeGroupFx sg = new ShapeGroupFx((ShapeGroup) s);
+                    sg.removeGenericChilds();
+                    addShapeToCanvas(sg);
                 }
             }
         }
@@ -161,6 +168,13 @@ public class FxApp extends XShape {
                     if(s instanceof Rectangle){
                         RectangleFx rect = new RectangleFx((Rectangle) s);
                         addShapeToToolbar(rect);
+                    } else if(s instanceof Polygon){
+                        PolygonFx poly = new PolygonFx((Polygon) s);
+                        addShapeToToolbar(poly);
+                    } else if(s instanceof ShapeGroup){
+                        ShapeGroupFx sg = new ShapeGroupFx((ShapeGroup) s);
+                        sg.removeGenericChilds();
+                        addShapeToToolbar(sg);
                     }
                 }
             }
@@ -179,6 +193,13 @@ public class FxApp extends XShape {
                 if(s instanceof Rectangle){
                     Rectangle rect = new Rectangle((Rectangle) s);
                     toSerialize.add(rect);
+                } else if(s instanceof Polygon){
+                    Polygon poly = new Polygon((Polygon) s);
+                    toSerialize.add(poly);
+                } else if(s instanceof ShapeGroup){
+                    ShapeGroup sg = new ShapeGroup((ShapeGroup) s);
+                    sg.setGenericChilds();
+                    toSerialize.add(sg);
                 }
             }
             out.writeObject(toSerialize);
@@ -235,7 +256,8 @@ public class FxApp extends XShape {
                     ShapeToolbarAddOperation operation = new ShapeToolbarAddOperation(newShape, this);
                     executeNewOperation(operation);
                 }
-                else if(e.getSceneX() > this.toolbarV.getWidth() && e.getSceneY() > menu.getHeight() + toolbarH.getHeight()){
+                else if(e.getSceneX() > this.toolbarV.getWidth() && e.getSceneY() > menu.getHeight() + toolbarH.getHeight()
+                && e.getButton() == MouseButton.PRIMARY && !e.isControlDown()){
                     ShapePositionOperation positionOperation = new ShapePositionOperation(shape, new Point2D.Double(e.getSceneX(), e.getSceneY()));
                     executeNewOperation(positionOperation);
                 }
@@ -292,10 +314,14 @@ public class FxApp extends XShape {
         }
 
         item1.setOnAction(e -> {
-            createGroup();
+            if(currentSelection.size() > 1){
+                ShapeGroupOperation operation = new ShapeGroupOperation(this, currentSelection);
+                executeNewOperation(operation);
+            }
         });
         item2.setOnAction(e -> {
-            destroyGroup((ShapeGroup) graphToModel.get(n));
+            ShapeDegroupOperation operation = new ShapeDegroupOperation(this, (ShapeGroup) graphToModel.get(n));
+            executeNewOperation(operation);
         });
 
         menu.getItems().addAll(item1, item2, editMenu);
@@ -406,6 +432,29 @@ public class FxApp extends XShape {
                 });
                 gp.add(btn, 0, 1);
                 stage.showAndWait();
+                break;
+            case "Side length":
+                dialog = new TextInputDialog(String.valueOf(((Polygon) s).getSideLength()));
+                dialog.setTitle("Set side length");
+                dialog.setContentText("Side length :");
+                result = dialog.showAndWait();
+
+                if(result.isPresent() && isNumeric(result.get())){
+                    PolygonSideLengthOperation lengthOperation = new PolygonSideLengthOperation((Polygon) s, Double.parseDouble(result.get()));
+                    executeNewOperation(lengthOperation);
+                }
+                break;
+            case "Number of sides":
+                dialog = new TextInputDialog(String.valueOf(((Polygon) s).getNbSides()));
+                dialog.setTitle("Set number of sides");
+                dialog.setContentText("Number of sides :");
+                result = dialog.showAndWait();
+
+                if(result.isPresent() && isNumeric(result.get())){
+                    PolygonNumberSidesOperation numberOperation = new PolygonNumberSidesOperation((Polygon) s, Integer.parseInt(result.get()));
+                    executeNewOperation(numberOperation);
+                }
+                break;
         }
         s.update();
     }

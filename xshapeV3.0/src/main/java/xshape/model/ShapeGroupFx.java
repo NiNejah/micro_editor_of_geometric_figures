@@ -2,12 +2,8 @@ package xshape.model;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.layout.StackPane;
-import xshape.Element;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ShapeGroupFx extends ShapeGroup{
@@ -22,18 +18,21 @@ public class ShapeGroupFx extends ShapeGroup{
         super();
     }
 
-    public ShapeGroupFx(ShapeGroupFx sg){
+    public ShapeGroupFx(ShapeGroup sg){
         super(sg);
     }
     @Override
     public Object draw() {
+        if(group == null) group = new Group();
+        group.getChildren().clear();
+        for(Shape s: childShapes){
+            group.getChildren().add((Node) s.draw());
+        }
         return group;
     }
 
     public void add(Shape s){
-        if(group == null) group = new Group();
         this.childShapes.add(s);
-        group.getChildren().add((Node) s.draw());
     }
 
     public void remove(Shape s){
@@ -44,5 +43,26 @@ public class ShapeGroupFx extends ShapeGroup{
     @Override
     public Shape clone() {
         return new ShapeGroupFx(this);
+    }
+
+    public void removeGenericChilds(){
+        ArrayList<Shape> shapes = new ArrayList<>();
+        for(Shape s: childShapes){
+            if(s instanceof Rectangle){
+                RectangleFx rect = new RectangleFx((Rectangle) s);
+                shapes.add(rect);
+            } else if(s instanceof Polygon){
+                PolygonFx poly = new PolygonFx((Polygon) s);
+                shapes.add(poly);
+            } else if(s instanceof ShapeGroup){
+                ShapeGroupFx sg = new ShapeGroupFx((ShapeGroup) s);
+                sg.removeGenericChilds();
+                shapes.add(sg);
+            }
+        }
+        removeAll();
+        for(Shape s: shapes){
+            add(s);
+        }
     }
 }

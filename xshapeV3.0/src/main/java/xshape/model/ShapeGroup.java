@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class ShapeGroup implements Shape, Serializable {
+public class ShapeGroup implements Shape, Serializable {
     // TODO
     protected List<Shape> childShapes;
 
@@ -36,7 +36,7 @@ public abstract class ShapeGroup implements Shape, Serializable {
     }
 
     public List<String> editableParameters(){
-        List<String> parameters = Arrays.asList(new String[]{});
+        List<String> parameters = Arrays.asList(new String[]{"Rotation"});
         return parameters;
     }
 
@@ -45,9 +45,13 @@ public abstract class ShapeGroup implements Shape, Serializable {
         return new double[0];
     }
 
-    public abstract void add(Shape s);
+    public void add(Shape s){
+        this.childShapes.add(s);
+    }
 
-    public abstract void remove(Shape s);
+    public void remove(Shape s){
+        this.childShapes.remove(s);
+    }
 
     public double minX(){
         double min = 1000000;
@@ -177,7 +181,30 @@ public abstract class ShapeGroup implements Shape, Serializable {
         }
     }
 
+    public Object draw() {return null;}
+
     public Shape clone() {
-        return null;
+        return new ShapeGroup(this);
+    }
+
+    public void setGenericChilds(){
+        ArrayList<Shape> shapes = new ArrayList<>();
+        for(Shape s: childShapes){
+            if(s instanceof Rectangle){
+                Rectangle rect = new Rectangle((Rectangle) s);
+                shapes.add(rect);
+            } else if(s instanceof Polygon){
+                Polygon poly = new Polygon((Polygon) s);
+                shapes.add(poly);
+            } else if(s instanceof ShapeGroup){
+                ShapeGroup sg = new ShapeGroup((ShapeGroup) s);
+                sg.setGenericChilds();
+                shapes.add(sg);
+            }
+        }
+        removeAll();
+        for(Shape s: shapes){
+            add(s);
+        }
     }
 }
