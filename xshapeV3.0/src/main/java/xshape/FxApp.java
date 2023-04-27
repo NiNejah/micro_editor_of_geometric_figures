@@ -56,7 +56,7 @@ public class FxApp extends XShape {
                 throw new RuntimeException(ex);
             }
             serializeToolbar(file.getAbsolutePath());
-
+            System.exit(0);
         });
     }
     @Override

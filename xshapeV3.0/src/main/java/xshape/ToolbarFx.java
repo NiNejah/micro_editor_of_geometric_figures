@@ -31,7 +31,7 @@ public class ToolbarFx extends ElementAbstract implements xshape.Toolbar{
             ToolBar toolbar = new ToolBar();
             toolbar.setOrientation(Orientation.HORIZONTAL);
             ImageView iv = new ImageView();
-            File binFile = new File(getClass().getClassLoader().getResource("bin.png").getFile());
+            File binFile = new File(getClass().getResource("/images/bin.png").getFile());
             Image bin = new Image(binFile.getAbsolutePath());
             iv.setImage(bin);
             iv.setFitWidth(40);

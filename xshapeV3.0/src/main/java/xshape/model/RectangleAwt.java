@@ -61,10 +61,6 @@ public class RectangleAwt extends Rectangle implements Serializable {
 		jp.addMouseListener(new Observateur());
         return jp;
     }
-	@Override
-	public double rotation(){return _rotation;};
-	@Override
-	public void rotation(double angle){_rotation = angle;};
 	public Point2D rotationCenter(){return _centerOfRotation;}
 	public void rotationCenter(Point2D centerOfRotation){ _centerOfRotation = centerOfRotation;}
 

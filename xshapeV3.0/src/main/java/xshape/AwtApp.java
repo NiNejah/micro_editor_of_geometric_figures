@@ -24,7 +24,7 @@ class GUIHelper {
         JFrame frame = new JFrame(frameName);
         WindowAdapter wa = new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                System.exit(0);
+                //System.exit(0);
             }
         };
         frame.addWindowListener(wa);
@@ -70,9 +70,13 @@ public class AwtApp extends XShape implements ActionListener {
             {
                 if(shape instanceof Rectangle){
                     RectangleAwt rectangle = (RectangleAwt) shape;
-                    g.setColor(new Color((int) (rectangle.getRGB()[0]*255), (int) (rectangle.getRGB()[1]*255), (int) (rectangle.getRGB()[2]*255)));
-                    g.fillRect((int) (rectangle.position().getX() - rectangle.size().getX()/2), (int) (rectangle.position().getY() - rectangle.size().getY()/2),
+                    Graphics2D g2 = (Graphics2D) g;
+                    g2.setColor(new Color((int) (rectangle.getRGB()[0]*255), (int) (rectangle.getRGB()[1]*255), (int) (rectangle.getRGB()[2]*255)));
+                    System.out.println(rectangle.rotation());
+                    g2.rotate(Math.toRadians(rectangle.rotation()), rectangle.rotationCenter().getX(), rectangle.rotationCenter().getY());
+                    g2.fillRect((int) (rectangle.position().getX() - rectangle.size().getX()/2), (int) (rectangle.position().getY() - rectangle.size().getY()/2),
                             (int) rectangle.size().getX(), (int) rectangle.size().getY());
+                    g2.rotate(Math.toRadians(-(rectangle.rotation())), rectangle.rotationCenter().getX(), rectangle.rotationCenter().getY());
                 } else if(shape instanceof Polygon){
                     PolygonAwt polygon = (PolygonAwt) shape;
                     List<Point2D.Double> coordinates = polygon.sidesPosition();
@@ -97,9 +101,12 @@ public class AwtApp extends XShape implements ActionListener {
             for(Shape shape: sg.getChilds()){
                 if(shape instanceof Rectangle){
                     RectangleAwt rectangle = (RectangleAwt) shape;
-                    g.setColor(new Color((int) (rectangle.getRGB()[0]*255), (int) (rectangle.getRGB()[1]*255), (int) (rectangle.getRGB()[2]*255)));
-                    g.fillRect((int) (rectangle.position().getX() - rectangle.size().getX()/2), (int) (rectangle.position().getY() - rectangle.size().getY()/2),
+                    Graphics2D g2 = (Graphics2D) g;
+                    g2.setColor(new Color((int) (rectangle.getRGB()[0]*255), (int) (rectangle.getRGB()[1]*255), (int) (rectangle.getRGB()[2]*255)));
+                    g2.rotate(Math.toRadians(rectangle.rotation()), rectangle.rotationCenter().getX(), rectangle.rotationCenter().getY());
+                    g2.fillRect((int) (rectangle.position().getX() - rectangle.size().getX()/2), (int) (rectangle.position().getY() - rectangle.size().getY()/2),
                             (int) rectangle.size().getX(), (int) rectangle.size().getY());
+                    g2.rotate(Math.toRadians(-(rectangle.rotation())), rectangle.rotationCenter().getX(), rectangle.rotationCenter().getY());
                 } else if(shape instanceof Polygon){
                     PolygonAwt polygon = (PolygonAwt) shape;
                     List<Point2D.Double> coordinates = polygon.sidesPosition();
@@ -141,11 +148,9 @@ public class AwtApp extends XShape implements ActionListener {
             this.canvas = new Canvas();
             for(Shape s: newCanvas){
                 if(s instanceof Rectangle){
-                    System.out.println("rect");
                     RectangleAwt rect = new RectangleAwt((Rectangle) s);
                     addShapeToCanvas(rect);
                 } else if(s instanceof Polygon){
-                    System.out.println("poly");
                     PolygonAwt poly = new PolygonAwt((Polygon) s);
                     addShapeToCanvas(poly);
                 } else if(s instanceof ShapeGroup){
