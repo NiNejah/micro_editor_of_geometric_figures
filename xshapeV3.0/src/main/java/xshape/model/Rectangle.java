@@ -50,7 +50,9 @@ public class Rectangle extends AShape implements Serializable {
     @Override
     public boolean clicked(double mx, double my) {
         if(mx >= position().getX()-width/2 && mx <= position().getX()+width/2
-                && my >= position().getY()-height/2 && my <= position().getY()+height/2) return true;
+                && my >= position().getY()-height/2 && my <= position().getY()+height/2){
+            return true;
+        }
         return false;
     }
 

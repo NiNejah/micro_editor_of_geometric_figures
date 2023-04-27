@@ -38,7 +38,8 @@ public class ButtonAwt extends ElementAbstract implements xshape.Button {
 
     @Override
     public void addIcon(String icon) {
-        String resourcePath = "/images/" + icon;
+        //String resourcePath = "/images/" + icon;
+        String resourcePath = icon;
         URL resourceUrl = getClass().getResource(resourcePath);
         if (resourceUrl == null) {
             throw new IllegalArgumentException("Resource not found: " + resourcePath);

@@ -31,7 +31,7 @@ public class ShapeFactoryAwt implements ShapeFactory{
 
     @Override
     public Polygon createPolygon(double posX, double posY, int sides, double sideLength) {
-        return new PolygonAwt(sides, sideLength, new Point2D.Double(posX, posY), 0, 0, 0, 1.0, 0, 0);
+        return new PolygonAwt(sides, sideLength, new Point2D.Double(posX, posY), 0, 0, 0, 255, 0, 0);
     }
 
     @Override

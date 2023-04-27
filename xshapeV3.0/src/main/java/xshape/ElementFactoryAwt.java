@@ -27,17 +27,17 @@ public class ElementFactoryAwt implements ElementFactory {
     public Toolbar createToolbar(double posX, double posY, double height, double width, ToolbarStyle style) {
         if(style == ToolbarStyle.VERTICAL){
             ToolbarAwt toolbarAwt =  new ToolbarAwt(width, height, new Point2D.Double(posX, posY),new ShapeFactoryAwt());
-            Shape shape = createRectangle(0, 0, 50, 50);
+            /*Shape shape = createRectangle(0, 0, 50, 50);
             shape.translate(new Point2D.Double(100, 50));
             toolbarAwt.addShape(shape);
             Shape shape2 = createRectangle(0, 0, 70, 50);
-            toolbarAwt.addShape(shape2);
+            toolbarAwt.addShape(shape2);*/
             return toolbarAwt ;
         }else if (style == ToolbarStyle.HORIZONTAL){
             ButtonBarAwt btnAwt = new ButtonBarAwt(width, height, new Point2D.Double(posX, posY), new ShapeFactoryAwt());
-            ButtonAwt saveBtn =  (ButtonAwt) createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
-            ButtonAwt unBtn =  (ButtonAwt) createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do","redo.png");
-            ButtonAwt rnBtn =  (ButtonAwt) createButton((3*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"redo","load.png");
+            ButtonAwt saveBtn =  (ButtonAwt) createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save", "/images/save.png");
+            ButtonAwt unBtn =  (ButtonAwt) createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do", "/images/undo.png");
+            ButtonAwt rnBtn =  (ButtonAwt) createButton((3*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"redo", "/images/redo.png");
             btnAwt.addButton(saveBtn);
             btnAwt.addButton(unBtn);
             btnAwt.addButton(rnBtn);

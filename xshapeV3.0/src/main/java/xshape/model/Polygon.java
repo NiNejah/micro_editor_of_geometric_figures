@@ -31,7 +31,7 @@ public class Polygon extends AShape implements Serializable {
         this.sideLength = sideLength;
     }
 
-    protected List<Point2D.Double> sidesPosition(){
+    public List<Point2D.Double> sidesPosition(){
         ArrayList<Point2D.Double> positions = new ArrayList<>();
         double angle = Math.PI * 2 / nbSides;
         double rotationAngle = rotation();
@@ -52,6 +52,11 @@ public class Polygon extends AShape implements Serializable {
     public List<String> editableParameters(){
         List<String> parameters = Arrays.asList(new String[]{"Side length", "Number of sides", "Rotation", "Color"});
         return parameters;
+    }
+
+    @Override
+    public boolean clicked(double mx, double my) {
+        return false;
     }
 
     public Shape clone(){

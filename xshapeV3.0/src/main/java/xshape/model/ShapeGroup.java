@@ -41,6 +41,11 @@ public class ShapeGroup implements Shape, Serializable {
     }
 
     @Override
+    public boolean clicked(double mx, double my) {
+        return false;
+    }
+
+    @Override
     public double[] getRGB() {
         return new double[0];
     }

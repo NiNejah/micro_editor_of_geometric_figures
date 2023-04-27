@@ -71,11 +71,4 @@ public class RectangleAwt extends Rectangle implements Serializable {
 	public Shape clone() {
 		return new RectangleAwt(this);
 	}
-
-	public boolean clicked(double mx,double my){
-		Point2D pos = position();
-		Point2D size = size();
-		return  mx<=pos.getX() && my>pos.getY() &&
-				mx <= size.getX() && mx <= size.getY()  ;
-	}
 }
