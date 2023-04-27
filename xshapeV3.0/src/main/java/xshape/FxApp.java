@@ -36,6 +36,10 @@ public class FxApp extends XShape {
 
     private Stage stage;
 
+    protected ToolBar toolbarV;
+
+    protected ToolBar toolbarH;
+
     private MenuBar menu;
 
 
@@ -133,7 +137,9 @@ public class FxApp extends XShape {
         if (file != null){
             ArrayList<Shape> newCanvas = deserialize(file.getAbsolutePath());
             FxApplication._root.getChildren().clear();
-            graphToModel.clear();
+            for(Shape s: canvas.getShapes()){
+                graphToModel.remove(s);
+            }
 
             this.canvas = new Canvas();
             for(Shape s: newCanvas){
@@ -166,10 +172,10 @@ public class FxApp extends XShape {
                 ArrayList<Shape> toolbarShapes = deserialize(toolbarPath);
                 for(Shape s: toolbarShapes){
                     if(s instanceof Rectangle){
-                        RectangleFx rect = new RectangleFx((Rectangle) s);
+                        Rectangle rect = _shapefactory.createRectangle((Rectangle) s);
                         addShapeToToolbar(rect);
                     } else if(s instanceof Polygon){
-                        PolygonFx poly = new PolygonFx((Polygon) s);
+                        Polygon poly = _shapefactory.createPolygon((Polygon) s);
                         addShapeToToolbar(poly);
                     } else if(s instanceof ShapeGroup){
                         ShapeGroupFx sg = new ShapeGroupFx((ShapeGroup) s);
@@ -277,6 +283,20 @@ public class FxApp extends XShape {
         Node n = (Node) s.draw();
         graphToModel.remove(n);
         toolbarV.getItems().remove(n);
+        if(toolbarV.getItems().isEmpty()){
+            Rectangle rectangle = this._shapefactory.createRectangle(0, 0, 50, 50);
+            rectangle.setColor(0, 0, 1.0);
+            Polygon polygon = this._shapefactory.createPolygon(0, 0, 5, 40);
+            Node rectNode = (javafx.scene.shape.Rectangle) rectangle.draw();
+            Node polyNode = (javafx.scene.shape.Polygon) polygon.draw();
+            toolbarV.getItems().addAll(rectNode, polyNode);
+            ObservableList<Node> nodes = toolbarV.getItems();
+            graphToModel.put(rectNode, rectangle);
+            graphToModel.put(polyNode, polygon);
+            for(Node node: nodes){
+                toolbarShapeEvents(node);
+            }
+        }
     }
 
     public void removeShapeFromCanvas(Shape s){
@@ -288,6 +308,7 @@ public class FxApp extends XShape {
 
     public void addShapeToToolbar(Shape s){
         Node newNode = (Node) s.draw();
+        System.out.println(newNode);
         /*if (newNode instanceof Group){
             for(Node node: ((Group) newNode).getChildren()){
                 System.out.println(node);
@@ -481,17 +502,5 @@ public class FxApp extends XShape {
             this.operations.get(operationPointer).execute();
             operationPointer++;
         }
-    }
-
-    private boolean isNumeric(String txt){
-        if (txt == null) {
-            return false;
-        }
-        try {
-            double d = Double.parseDouble(txt);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
     }
 }

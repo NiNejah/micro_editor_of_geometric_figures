@@ -5,13 +5,18 @@ import xshape.model.Rectangle;
 
 import java.awt.geom.Point2D;
 import java.awt.*;
+import java.io.Serializable;
 
-public class RectangleAwt extends Rectangle {
+public class RectangleAwt extends Rectangle implements Serializable {
 	private double _rotation;
 	private Point2D _centerOfRotation = new Point2D.Double(position().getX() + (size().getX()/2), position().getY() + (size().getY()/2));
 	public RectangleAwt(double width, double height, double arcWidth, double arcHeight,
 						Point2D.Double pos, double rot, int red, int green, int blue) {
 		super(width, height, arcWidth, arcHeight, pos, rot, red, green, blue);
+	}
+
+	public RectangleAwt(Rectangle r){
+		super(r);
 	}
 
 	@Override
@@ -35,4 +40,8 @@ public class RectangleAwt extends Rectangle {
 	public void rotation(double angle){_rotation = angle;};
 	public Point2D rotationCenter(){return _centerOfRotation;}
 	public void rotationCenter(Point2D centerOfRotation){ _centerOfRotation = centerOfRotation;}
+
+	public Shape clone(){
+		return new RectangleAwt(this);
+	}
 }

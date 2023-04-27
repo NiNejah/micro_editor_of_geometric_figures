@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 class GUIHelper {
-    public static void showOnFrame(JComponent component, String frameName) {
+    public static JFrame showOnFrame(JComponent component, String frameName) {
         JFrame frame = new JFrame(frameName);
         WindowAdapter wa = new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -23,6 +23,7 @@ class GUIHelper {
         frame.getContentPane().add(component);
         frame.pack();
         frame.setVisible(true);
+        return frame;
     }
 }
 
@@ -38,6 +39,8 @@ public class AwtApp extends XShape {
             _xshape.draw();
         }
     }
+
+    private JFrame frame;
     
     @Override
     protected void createFactories() {
@@ -46,11 +49,19 @@ public class AwtApp extends XShape {
     }
 
     @Override
-    void run() {
+    protected void createUI() {
+
+    }
+
+    @Override
+    public void run() {
         JCanvas jc = new JCanvas(this);
         jc.setBackground(Color.WHITE);
         jc.setPreferredSize(new Dimension(500, 500));
-        GUIHelper.showOnFrame(jc, "XShape Swing/AWT Rendering");        
+        this.frame = GUIHelper.showOnFrame(jc, "XShape Swing/AWT Rendering");
+        createFactories();
+        createUI();
+        draw();
     }
 
     @Override
@@ -70,11 +81,6 @@ public class AwtApp extends XShape {
 
     @Override
     protected void removeShapeFromToolbar(Shape shape) {
-
-    }
-
-    @Override
-    protected void createUI() {
 
     }
 

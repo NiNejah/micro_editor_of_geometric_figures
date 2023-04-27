@@ -3,6 +3,8 @@ package xshape;
 import xshape.model.Rectangle;
 import xshape.model.ShapeFactory;
 
+import javax.swing.*;
+
 public class ToolbarAwt extends ElementAbstract implements xshape.Toolbar{
 
     public Rectangle rectangle;
@@ -17,7 +19,6 @@ public class ToolbarAwt extends ElementAbstract implements xshape.Toolbar{
     }
     @Override
     public Object draw() {
-        // TODO
         return null;
     }
 }

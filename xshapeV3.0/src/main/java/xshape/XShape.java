@@ -15,10 +15,6 @@ public abstract class XShape {
 
     protected Canvas canvas;
 
-    protected ToolBar toolbarV;
-
-    protected ToolBar toolbarH;
-
     protected List<Shape> currentSelection = new ArrayList<>();
 
     // TODO : remove all of that to a Builder :
@@ -32,7 +28,7 @@ public abstract class XShape {
     //method factory to delegate instanciation of Shapefactory to subclass
     protected abstract void createFactories();
     //Handler to start the GUI
-    void run(){
+    public void run(){
         createFactories();
         createUI();
         draw();
@@ -118,5 +114,17 @@ public abstract class XShape {
             throw new RuntimeException(e);
         }
     }
+    protected boolean isNumeric(String txt){
+        if (txt == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(txt);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
 
 }

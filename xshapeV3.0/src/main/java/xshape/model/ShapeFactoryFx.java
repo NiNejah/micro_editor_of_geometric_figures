@@ -13,6 +13,11 @@ public class ShapeFactoryFx implements ShapeFactory{
     }
 
     @Override
+    public Rectangle createRectangle(Rectangle r) {
+        return new RectangleFx(r);
+    }
+
+    @Override
     public ShapeGroup createShapeGroup() {
         return new ShapeGroupFx();
     }
@@ -25,5 +30,10 @@ public class ShapeFactoryFx implements ShapeFactory{
     @Override
     public Polygon createPolygon(double posX, double posY, int sides, double sideLength) {
         return new PolygonFx(sides, sideLength, new Point2D.Double(posX, posY), 0, 0, 0, 1.0, 0, 0);
+    }
+
+    @Override
+    public Polygon createPolygon(Polygon p) {
+        return new PolygonFx(p);
     }
 }
