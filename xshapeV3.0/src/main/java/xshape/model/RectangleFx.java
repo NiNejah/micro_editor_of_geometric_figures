@@ -48,4 +48,9 @@ public class RectangleFx extends Rectangle implements Serializable {
 		_adapted.getTransforms().add(new Rotate(rotation(), rotationCenter().getX(), rotationCenter().getY()));
 	}
 
+	@Override
+	public boolean clicked(double mx, double my) {
+		return false;
+	}
+
 }

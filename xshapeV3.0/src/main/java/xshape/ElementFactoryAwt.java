@@ -2,11 +2,15 @@ package xshape;
 
 import xshape.model.Rectangle;
 import xshape.model.RectangleAwt;
+import xshape.model.Shape;
 import xshape.model.ShapeFactoryAwt;
 
+import javax.swing.*;
 import java.awt.geom.Point2D;
 
 public class ElementFactoryAwt implements ElementFactory {
+    private int BTN_SIZE = 20 ;
+    private int BTN_MARGE = 20 ;
     public ElementFactoryAwt() {
     }
     public Rectangle createRectangle(double posX, double posY,
@@ -21,12 +25,35 @@ public class ElementFactoryAwt implements ElementFactory {
     }
     @Override
     public Toolbar createToolbar(double posX, double posY, double height, double width, ToolbarStyle style) {
-        return new ToolbarAwt(new ShapeFactoryAwt(), style);
+        if(style == ToolbarStyle.VERTICAL){
+            ToolbarAwt toolbarAwt =  new ToolbarAwt(width, height, new Point2D.Double(posX, posY),new ShapeFactoryAwt());
+            Shape shape = createRectangle(0, 0, 50, 50);
+            shape.translate(new Point2D.Double(100, 50));
+            toolbarAwt.addShape(shape);
+            Shape shape2 = createRectangle(0, 0, 70, 50);
+            toolbarAwt.addShape(shape2);
+            return toolbarAwt ;
+        }else if (style == ToolbarStyle.HORIZONTAL){
+            ButtonBarAwt btnAwt = new ButtonBarAwt(width, height, new Point2D.Double(posX, posY), new ShapeFactoryAwt());
+            ButtonAwt saveBtn =  (ButtonAwt) createButton(BTN_MARGE,20,BTN_SIZE,BTN_SIZE,"Save","save.png");
+            ButtonAwt unBtn =  (ButtonAwt) createButton((2*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"do","redo.png");
+            ButtonAwt rnBtn =  (ButtonAwt) createButton((3*BTN_MARGE)+BTN_SIZE,20,BTN_SIZE,BTN_SIZE,"redo","load.png");
+            btnAwt.addButton(saveBtn);
+            btnAwt.addButton(unBtn);
+            btnAwt.addButton(rnBtn);
+            return btnAwt;
+        }
+        return null ;
     }
 
     @Override
     public Object createUI(Toolbar toolbarH, Toolbar toolbarV) {
-        // TODO
-        return null;
+        JPanel jp = new JPanel();
+//        jp.setBounds(0,0,500,500);
+        JPanel toolVJp = (JPanel) toolbarV.draw();
+        jp.add(toolVJp);
+        JPanel toolHJp = (JPanel) toolbarH.draw();
+        jp.add(toolHJp);
+        return jp;
     }
 }

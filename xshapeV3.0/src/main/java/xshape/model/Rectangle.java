@@ -47,6 +47,13 @@ public class Rectangle extends AShape implements Serializable {
         return parameters;
     }
 
+    @Override
+    public boolean clicked(double mx, double my) {
+        if(mx >= position().getX()-width/2 && mx <= position().getX()+width/2
+                && my >= position().getY()-height/2 && my <= position().getY()+height/2) return true;
+        return false;
+    }
+
     public Shape clone(){
         return new Rectangle(this);
     }

@@ -44,24 +44,23 @@ public class ShapeGroupFx extends ShapeGroup{
     public Shape clone() {
         return new ShapeGroupFx(this);
     }
-
-    public void removeGenericChilds(){
+    public void removeGenericChilds() {
         ArrayList<Shape> shapes = new ArrayList<>();
-        for(Shape s: childShapes){
-            if(s instanceof Rectangle){
+        for (Shape s : childShapes) {
+            if (s instanceof Rectangle) {
                 RectangleFx rect = new RectangleFx((Rectangle) s);
                 shapes.add(rect);
-            } else if(s instanceof Polygon){
+            } else if (s instanceof Polygon) {
                 PolygonFx poly = new PolygonFx((Polygon) s);
                 shapes.add(poly);
-            } else if(s instanceof ShapeGroup){
+            } else if (s instanceof ShapeGroup) {
                 ShapeGroupFx sg = new ShapeGroupFx((ShapeGroup) s);
                 sg.removeGenericChilds();
                 shapes.add(sg);
             }
         }
         removeAll();
-        for(Shape s: shapes){
+        for (Shape s : shapes) {
             add(s);
         }
     }

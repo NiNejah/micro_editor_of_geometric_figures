@@ -18,8 +18,7 @@ public abstract class XShape {
     protected List<Shape> currentSelection = new ArrayList<>();
 
     // TODO : remove all of that to a Builder :
-    private int BTN_SIZE = 40 ;
-    private int BTN_MARGE = 25 ;
+
 
     public XShape(){
         this.canvas = new Canvas();

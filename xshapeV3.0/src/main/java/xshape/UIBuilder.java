@@ -12,8 +12,8 @@ public class UIBuilder {
     }
 
     public Object build(){
-        this.toolbarH = factory.createToolbar(0, 0, 0, 0, ToolbarStyle.HORIZONTAL);
-        this.toolbarV = factory.createToolbar(0, 0, 0, 0, ToolbarStyle.VERTICAL);
+        this.toolbarH = factory.createToolbar(0, 0, 50,500 , ToolbarStyle.HORIZONTAL);
+        this.toolbarV = factory.createToolbar(0, 0, 0,100, ToolbarStyle.VERTICAL);
         return factory.createUI(toolbarH, toolbarV);
     }
 

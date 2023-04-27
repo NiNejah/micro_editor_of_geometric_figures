@@ -26,19 +26,18 @@ public class ToolbarFx extends ElementAbstract implements xshape.Toolbar{
         if(style == ToolbarStyle.VERTICAL){
             ToolBar toolbar = new ToolBar();
             toolbar.setOrientation(Orientation.VERTICAL);
-
             return toolbar;
         } else {
             ToolBar toolbar = new ToolBar();
             toolbar.setOrientation(Orientation.HORIZONTAL);
-            ImageView iv = new ImageView();
-            File binFile = new File(getClass().getClassLoader().getResource("bin.png").getFile());
-            Image bin = new Image(binFile.getAbsolutePath());
-            iv.setImage(bin);
-            iv.setFitWidth(40);
-            iv.setFitHeight(40);
-            iv.setId("bin");
-            toolbar.getItems().add(iv);
+//            ImageView iv = new ImageView();
+//            File binFile = new File(getClass().getClassLoader().getResource("bin.png").getFile());
+//            Image bin = new Image(binFile.getAbsolutePath());
+//            iv.setImage(bin);
+//            iv.setFitWidth(40);
+//            iv.setFitHeight(40);
+//            iv.setId("bin");
+//            toolbar.getItems().add(iv);
             return toolbar;
         }
     }
